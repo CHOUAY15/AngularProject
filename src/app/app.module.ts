@@ -9,6 +9,8 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FullComponent } from './layouts/full/full.component';
 import { DemoFlexyModule } from './demo-flexy-module'
+import { registerLocaleData } from '@angular/common';
+import localeAr from '@angular/common/locales/ar';
 
 // Modules
 import { DashboardModule } from './dashboard/dashboard.module';
@@ -32,4 +34,11 @@ import { ComponentsModule } from './components/components.module';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+  constructor() {
+    // Register Arabic locale
+    registerLocaleData(localeAr, 'ar');
+  }
+
+  
+}

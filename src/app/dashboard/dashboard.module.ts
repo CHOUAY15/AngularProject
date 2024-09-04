@@ -18,6 +18,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatIconModule } from '@angular/material/icon';
+import { Router, RouterModule } from '@angular/router';
 
 
 
@@ -45,7 +46,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatNativeDateModule,
     MatCheckboxModule,
     ReactiveFormsModule,
-    MatIconModule
+    MatIconModule,
+    RouterModule
   ],
   exports: [
     DashboardComponent,

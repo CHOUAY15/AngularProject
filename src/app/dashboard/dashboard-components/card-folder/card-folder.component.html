@@ -1,11 +1,26 @@
 <div class="card folder-card">
   <div class="card-body">
-    <h6 class="card-title">رقم الملف : 17819</h6>
-    <p class="card-text">تاريخ الخبرة : 12/11/2021</p>
-    <p class="card-text"><small class="text-muted">الاتعاب : 121 درهم</small></p>
-    <p class="card-text"><small class="text-muted">تحصيل الاتعاب : لا</small></p>
-    <div class="action">
-      <a href="#" class="view-more" (click)="onView()">
+    <h6 class="card-title">رقم الملف : {{ folder.fileNumber }}</h6>
+    <p class="card-text">تاريخ الخبرة : {{ folder.expertiseDate | date:'longDate':'':'ar' }}</p>
+    <p class="card-text"><small class="text-muted">الاتعاب : {{ folder.fees }} درهم</small></p>
+    <p class="card-text">
+      <small
+        class="text-muted"
+        [ngClass]="{
+          'text-success': folder.feesCollected,
+          'text-danger': !folder.feesCollected
+        }"
+      >
+        <ng-container *ngIf="folder.feesCollected; else noFees">
+          تحصيل الاتعاب: نعم
+        </ng-container>
+        <ng-template #noFees>
+          تحصيل الاتعاب: لا
+        </ng-template>
+      </small>
+    </p>
+        <div class="action">
+      <a   [routerLink]="['/detaille-folder/blalala']"  class="view-more" (click)="onView()">
         المزيد
       </a>
       <a href="#" class="delete" (click)="onDelete()" >
