@@ -1,0 +1,21 @@
+// Custom.scss
+
+// Override default variables
+$primary: #f88465;  // Change primary color
+$secondary: #6c757d;
+$success: #28a745;
+$info: #17a2b8;
+$warning: #ffc107;
+$danger: #dc3545;
+$light: #f8f9fa;
+$dark: #343a40;
+
+// Customize the link color
+$link-color: #0000;
+$link-hover-color: darken($link-color, 15%);
+
+
+// Import Bootstrap
+@import "bootstrap/scss/bootstrap";
+
+// Add any additional custom styles below this line

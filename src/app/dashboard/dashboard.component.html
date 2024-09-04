@@ -1,0 +1,26 @@
+<!-- file-management.component.html -->
+<div class="container mt-5" dir="rtl">
+  <div class="row mb-4">
+    <div class="col text-start">
+      <h2 class="mb-0">نظام إدارة الملفات</h2>
+    </div>
+    <div class="col text-end">
+      <button class="btn btn-sm" (click)="openAddFileDialog()" style="background-color: #f88465; color: white; font-size: 1rem; padding: 8px 16px; border-radius: 8px; border: 1px solid #ffc1a6;">
+        إضافة ملف جديد
+      </button>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h2 class="h5 mb-0">- لائحة الملفات</h2>
+        </div>
+        <div class="card-body">
+          <app-folder-list></app-folder-list>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,61 @@
+<mat-sidenav-container class="sidenav-container">
+
+  <!-- Sidebar -->
+  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+
+    <div class="p-16">
+      <div class="mb-16">
+        <a href="javascript:void(0)" class="d-flex align-items-center justify-content-center">
+          <img src="assets/images/favicon.svg" alt="" class="img-fluid" style="width: 24px; height: 24px;">
+          <span class="ms-4 fw-bold" style="font-size: 26px;">ملفي</span>
+        </a>
+      </div>
+
+      <div class="pt-8">
+        <ul>
+          <li class="list-group mb-2" *ngFor="let sidenav of sidebarMenu">
+            <a matRipple [matRippleColor]="'#f7f8f443'" routerLink="{{ sidenav.link }}"
+              class="sidebar-menu w-100 d-flex align-items-center" [routerLinkActive]="routerActive">
+              <i-feather name="{{ sidenav.icon }}" class="feather-base me-12"></i-feather> <span
+                class="ps-4 ">{{ sidenav.menu }}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+
+    </div>
+
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+
+    <!-- Header -->
+    <mat-toolbar class="header ps-24 pe-24">
+      <button type="button" class="ms-4" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <i-feather name="menu" class="text-light-muted feather-base mt-n3"></i-feather>
+      </button>
+      <div class="d-flex align-items-center ms-auto">
+        <img src="assets/images/user2.svg" class="rounded-circle" style="width: 24px; height: 24px;" alt="">
+        <span class="fw-bold ms-8">مدير العمل</span>
+
+      </div>
+    </mat-toolbar>
+    
+
+    <!-- Content -->
+    <div class="body-wrapper">
+      <div class="page-wrapper">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+
+
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
+
+
+

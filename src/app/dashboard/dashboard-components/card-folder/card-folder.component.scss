@@ -1,0 +1,77 @@
+.folder-card {
+    background-color: transparent;
+    border: 2px solid #f88465;
+    border-radius: 0 6px 6px 6px;
+    position: relative;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+  }
+  
+  .folder-card::before {
+    content: '';
+    position: absolute;
+    top: -12px;
+    left: -2px;
+    width: 30px;
+    height: 12px;
+    background-color: #f88465;
+    border: 2px solid #f88465;
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+  }
+  
+  .card-body {
+    padding: 10px 0;
+  }
+  
+  .card-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .card-text {
+    margin-bottom: 5px;
+  }
+  
+  .folder-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  .action {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+  }
+  .action a {
+    text-decoration: none;
+    padding: 0 10px;
+    font-weight: bold;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+  }
+  .action a:hover {
+    text-decoration: underline;
+  }
+  .action a.view-more {
+    color: green; /* Primary color */
+  }
+  .action a.view-more:hover {
+    text-decoration-color: green;
+  }
+  .action a.delete {
+    color: #dc3545; /* Red color */
+  }
+  .action a.delete:hover {
+    text-decoration-color: #dc3545;
+  }
+  .action a.update {
+    color: #17a2b8; /* Blue color */
+  }
+  .action a.update:hover {
+    text-decoration-color: #17a2b8;
+  }
+  .action i {
+    margin-right: 5px;
+  }
