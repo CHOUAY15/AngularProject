@@ -1,0 +1,8 @@
+<h2  mat-dialog-title style="color: red;">تأكيد الحذف</h2>
+<mat-dialog-content>
+  هل أنت متأكد أنك تريد حذف الملف رقم {{ data.folderNumber }}؟
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onNoClick()">إلغاء</button>
+  <button mat-button color="warn" (click)="onYesClick()">حذف</button>
+</mat-dialog-actions>

@@ -24,7 +24,7 @@ export class FolderListComponent implements OnInit {
       false, // ورقة المصاريف تم تقديمها
       "0987654321", // رقم الحساب
       false, // الرسوم تم تحصيلها
-      { authority: "محامي", fullName: "يوسف العلوي" }, // المحامي
+      { id:1,authority: "محامي", fullName: "يوسف العلوي" }, // المحامي
       { title: "الجلسة الثانية" } // الوقت
     ),
     new Folder(
@@ -42,7 +42,7 @@ export class FolderListComponent implements OnInit {
       true, // ورقة المصاريف تم تقديمها
       "1122334455", // رقم الحساب
       true, // الرسوم تم تحصيلها
-      { authority: "محامي", fullName: "عبد الرحمن الكيحل" }, // المحامي
+      { id:2,authority: "محامي", fullName: "عبد الرحمن الكيحل" }, // المحامي
       { title: "الجلسة الأولى" } // الوقت
     ),
     new Folder(
@@ -60,7 +60,7 @@ export class FolderListComponent implements OnInit {
       true, // ورقة المصاريف تم تقديمها
       "2233445566", // رقم الحساب
       true, // الرسوم تم تحصيلها
-      { authority: "محامي", fullName: "سعيد الزهراء" }, // المحامي
+      {id:3, authority: "محامي", fullName: "سعيد الزهراء" }, // المحامي
       { title: "الجلسة الرابعة" } // الوقت
     ),
     new Folder(
@@ -78,7 +78,7 @@ export class FolderListComponent implements OnInit {
       false, // ورقة المصاريف تم تقديمها
       "3344556677", // رقم الحساب
       false, // الرسوم تم تحصيلها
-      { authority: "محامي", fullName: "رشيد القادري" }, // المحامي
+      {id:4, authority: "محامي", fullName: "رشيد القادري" }, // المحامي
       { title: "الجلسة الثالثة" } // الوقت
     ),
     new Folder(
@@ -96,7 +96,7 @@ export class FolderListComponent implements OnInit {
       true, // ورقة المصاريف تم تقديمها
       "5566778899", // رقم الحساب
       true, // الرسوم تم تحصيلها
-      { authority: "محامي", fullName: "حسن العرابي" }, // المحامي
+      { id:4,authority: "محامي", fullName: "حسن العرابي" }, // المحامي
       { title: "الجلسة الثانية" } // الوقت
     ),
     new Folder(
@@ -114,7 +114,7 @@ export class FolderListComponent implements OnInit {
       true, // ورقة المصاريف تم تقديمها
       "6677889900", // رقم الحساب
       true, // الرسوم تم تحصيلها
-      { authority: "محامي", fullName: "فهد الجباري" }, // المحامي
+      {id:5, authority: "محامي", fullName: "فهد الجباري" }, // المحامي
       { title: "الجلسة الأولى" } // الوقت
     ),
     new Folder(
@@ -132,7 +132,7 @@ export class FolderListComponent implements OnInit {
       false, // ورقة المصاريف تم تقديمها
       "7788990011", // رقم الحساب
       false, // الرسوم تم تحصيلها
-      { authority: "محامي", fullName: "كمال زكري" }, // المحامي
+      {id:6, authority: "محامي", fullName: "كمال زكري" }, // المحامي
       { title: "الجلسة الرابعة" } // الوقت
     ),
     new Folder(
@@ -150,7 +150,7 @@ export class FolderListComponent implements OnInit {
       true, // ورقة المصاريف تم تقديمها
       "8899001122", // رقم الحساب
       true, // الرسوم تم تحصيلها
-      { authority: "محامي", fullName: "أيمن الفاسي" }, // المحامي
+      { id:7,authority: "محامي", fullName: "أيمن الفاسي" }, // المحامي
       { title: "الجلسة الثانية" } // الوقت
     ),
     new Folder(
@@ -168,7 +168,7 @@ export class FolderListComponent implements OnInit {
       true, // ورقة المصاريف تم تقديمها
       "2233445566", // رقم الحساب
       true, // الرسوم تم تحصيلها
-      { authority: "محامي", fullName: "محمد الشرايبي" }, // المحامي
+      {id:8, authority: "محامي", fullName: "محمد الشرايبي" }, // المحامي
       { title: "الجلسة الثالثة" } // الوقت
     )
    

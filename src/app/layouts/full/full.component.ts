@@ -35,13 +35,13 @@ export class FullComponent {
       menu: "الصفحة الرئيسية",
     },
     {
-      link: "/button",
-      icon: "disc",
+      link: "/Lawyers",
+      icon: "user",
       menu: "لائحة المحامين",
     },
     {
       link: "/forms",
-      icon: "layout",
+      icon: "book",
       menu: "لائحة الاطراف",
     },
     // {

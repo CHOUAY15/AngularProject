@@ -1,0 +1,126 @@
+<!-- lawyer-grid.component.html -->
+<div class="container mt-4" dir="rtl">
+    <h2 class="mb-4 text-black">جدول بيانات المحامين</h2>
+    
+    <!-- Added description -->
+    <div class="alert alert-info mb-4">
+      <p class="mb-0">مرحبًا بك في نظام إدارة بيانات المحامين. هنا يمكنك إضافة محامين جدد، وتعديل بياناتهم، وحذفهم عند الحاجة. استخدم النموذج أدناه لإضافة محامٍ جديد، أو قم بالتعديل مباشرة في الجدول.</p>
+    </div>
+  
+    <!-- Add new lawyer form -->
+    <div class="card mb-4">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">إضافة محامٍ جديد</h5>
+      </div>
+      <div class="card-body">
+        <form (ngSubmit)="addLawyer()" class="mb-0">
+          <div class="row g-3">
+            <div class="col-md-5">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>الاسم الكامل</mat-label>
+                <input matInput [(ngModel)]="newLawyer.fullName" name="fullName" required>
+                <mat-hint>أدخل الاسم الكامل للمحامي</mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="col-md-5">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>السلطة</mat-label>
+                <input matInput [(ngModel)]="newLawyer.authority" name="authority" required>
+                <mat-hint>أدخل اسم السلطة القضائية</mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="col-md-2">
+              <button mat-raised-button type="submit" class="w-100 bg-primary text-white">إضافة محامي</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  
+    <!-- Lawyers table -->
+    <div class="card">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">قائمة المحامين</h5>
+      </div>
+      <div class="card-body p-0">
+        <div class="mat-elevation-z8 table-container">
+          <mat-table [dataSource]="dataSource" class="lawyers-table">
+            <!-- ID Column -->
+            <ng-container matColumnDef="id">
+              <mat-header-cell *matHeaderCellDef class="fw-bold">الرقم</mat-header-cell>
+              <mat-cell *matCellDef="let lawyer">{{lawyer.id}}</mat-cell>
+            </ng-container>
+  
+            <!-- Full Name Column -->
+            <ng-container matColumnDef="fullName">
+              <mat-header-cell *matHeaderCellDef class="fw-bold">الاسم الكامل</mat-header-cell>
+              <mat-cell *matCellDef="let lawyer">
+                <ng-container *ngIf="!isEditing(lawyer); else editFullName">
+                  {{lawyer.fullName}}
+                </ng-container>
+                <ng-template #editFullName>
+                  <mat-form-field appearance="outline">
+                    <input matInput [(ngModel)]="editingLawyer!.fullName">
+                  </mat-form-field>
+                </ng-template>
+              </mat-cell>
+            </ng-container>
+  
+            <!-- Authority Column -->
+            <ng-container matColumnDef="authority">
+              <mat-header-cell *matHeaderCellDef class="fw-bold">السلطة</mat-header-cell>
+              <mat-cell *matCellDef="let lawyer">
+                <ng-container *ngIf="!isEditing(lawyer); else editAuthority">
+                  {{lawyer.authority}}
+                </ng-container>
+                <ng-template #editAuthority>
+                  <mat-form-field appearance="outline">
+                    <input matInput [(ngModel)]="editingLawyer!.authority">
+                  </mat-form-field>
+                </ng-template>
+              </mat-cell>
+            </ng-container>
+  
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+              <mat-header-cell *matHeaderCellDef class="text-danger fw-bold">الإجراءات</mat-header-cell>
+              <mat-cell *matCellDef="let lawyer">
+                <ng-container *ngIf="!isEditing(lawyer); else editActions">
+                  <button mat-icon-button color="primary" (click)="editLawyer(lawyer)" matTooltip="تعديل">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" (click)="deleteLawyer(lawyer.id)" matTooltip="حذف">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </ng-container>
+                <ng-template #editActions>
+                  <button mat-icon-button color="primary" (click)="updateLawyer()" matTooltip="حفظ التغييرات">
+                    <mat-icon>check</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" (click)="cancelEdit()" matTooltip="إلغاء التعديل">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </ng-template>
+              </mat-cell>
+            </ng-container>
+  
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+  
+          <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
+          </mat-paginator>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Added help text -->
+    <div class="mt-4 text-muted">
+      <p><strong>ملاحظات:</strong></p>
+      <ul>
+        <li>يمكنك تعديل بيانات المحامي بالضغط على أيقونة القلم في عمود الإجراءات.</li>
+        <li>لحذف محامٍ من القائمة، اضغط على أيقونة سلة المهملات.</li>
+        <li>استخدم شريط التنقل أسفل الجدول للتنقل بين الصفحات وتغيير عدد العناصر المعروضة.</li>
+      </ul>
+    </div>
+  </div>

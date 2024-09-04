@@ -1,1 +1,58 @@
-<p>detaille-folder works!</p>
+<div class="container mt-5" dir="rtl">
+    <div class="card shadow-lg">
+      <div class="card-header bg-primary text-white">
+        <h2 class="mb-0 text-center">معلومات الملف</h2>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <h4 class="text-primary mb-4">معلومات أساسية</h4>
+            <p><strong>رقم الملف:</strong> <span class="badge bg-info">{{ folder.fileNumber }}</span></p>
+            <p><strong>المحكمة:</strong> {{ folder.court.city }}</p>
+            <p><strong>الموضوع:</strong> {{ folder.subject }}</p>
+            <p><strong>القاضي:</strong> {{ folder.judge.gender }}</p>
+            <p><strong>نوع الإجراء:</strong> {{ folder.procedureType.description }}</p>
+          </div>
+          <div class="col-md-6">
+            <h4 class="text-primary mb-4">معلومات الأطراف</h4>
+            <p><strong>الأطراف:</strong> {{ folder.parties.fullName }}</p>
+            <p><strong>العنوان:</strong> {{ folder.parties.adresse }}</p>
+            <p><strong>المحامي:</strong> {{ folder.lawyer.fullName }}</p>
+            <p><strong>السلطة:</strong> {{ folder.lawyer.authority }}</p>
+          </div>
+        </div>
+        <hr>
+        <div class="row mt-4">
+          <div class="col-md-6">
+            <h4 class="text-primary mb-4">معلومات مالية</h4>
+            <p><strong>الرسوم:</strong> <span class="text-success">{{ folder.fees | currency:'MAD':'symbol' }}</span></p>
+            <p><strong>رقم الحساب:</strong> {{ folder.accountNumber }}</p>
+            <p>
+              <strong>الرسوم المحصلة:</strong>
+              <span [ngClass]="{'text-success': folder.feesCollected, 'text-danger': !folder.feesCollected}">
+                {{ folder.feesCollected ? 'تم تحصيلها' : 'لم يتم تحصيلها' }}
+              </span>
+            </p>
+          </div>
+          <div class="col-md-6">
+            <h4 class="text-primary mb-4">معلومات إضافية</h4>
+            <p><strong>الحكم الأولي:</strong> {{ folder.preliminaryJudgment }}</p>
+            <p><strong>تاريخ الخبرة:</strong> {{ folder.expertiseDate | date:'longDate':'':'ar'}}</p>
+            <p>
+              <strong>تقرير الخبير:</strong>
+              <span [ngClass]="{'text-success': folder.expertReportSubmitted, 'text-warning': !folder.expertReportSubmitted}">
+                {{ folder.expertReportSubmitted ? 'تم تقديمه' : 'لم يتم تقديمه' }}
+              </span>
+            </p>
+            <p>
+              <strong>ورقة المصاريف:</strong>
+              <span [ngClass]="{'text-success': folder.expenseSheetSubmitted, 'text-warning': !folder.expenseSheetSubmitted}">
+                {{ folder.expenseSheetSubmitted ? 'تم تقديمها' : 'لم يتم تقديمها' }}
+              </span>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>

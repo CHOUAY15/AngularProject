@@ -18,8 +18,13 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatIconModule } from '@angular/material/icon';
-import { Router, RouterModule } from '@angular/router';
+import {  RouterModule } from '@angular/router';
 import { AddNewOptionDialogComponent } from './dashboard-components/add-new-option-dialog/add-new-option-dialog.component';
+import { DetailleFolderComponent } from './dashboard-components/detaille-folder/detaille-folder.component';
+import { DeleteConfirmationDialogComponent } from './dashboard-components/card-folder/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { LawyerGridComponent } from './dashboard-components/lawyer-grid/lawyer-grid.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 
@@ -30,7 +35,10 @@ import { AddNewOptionDialogComponent } from './dashboard-components/add-new-opti
     FolderListComponent,
     CardFolderComponent,
     AddFolderComponent,
-    AddNewOptionDialogComponent
+    AddNewOptionDialogComponent,
+    DetailleFolderComponent,
+    DeleteConfirmationDialogComponent,
+    LawyerGridComponent
 
   ],
   imports: [
@@ -49,14 +57,19 @@ import { AddNewOptionDialogComponent } from './dashboard-components/add-new-opti
     MatCheckboxModule,
     ReactiveFormsModule,
     MatIconModule,
-    RouterModule
+    RouterModule,
+    MatTableModule,
+    MatPaginatorModule,
   ],
   exports: [
     DashboardComponent,
     FolderListComponent,
     CardFolderComponent,
     AddFolderComponent,
-    AddNewOptionDialogComponent
+    AddNewOptionDialogComponent,
+    DetailleFolderComponent,
+    DeleteConfirmationDialogComponent,
+    LawyerGridComponent
 
   ]
 })

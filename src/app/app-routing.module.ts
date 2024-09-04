@@ -7,6 +7,7 @@ import { FormsComponent } from './components/forms/forms.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { FullComponent } from './layouts/full/full.component';
 import { DetailleFolderComponent } from './dashboard/dashboard-components/detaille-folder/detaille-folder.component';
+import { LawyerGridComponent } from './dashboard/dashboard-components/lawyer-grid/lawyer-grid.component';
 
 const routes: Routes = [
   {
@@ -16,7 +17,7 @@ const routes: Routes = [
       {path:"", redirectTo:"/home", pathMatch:"full"},
       {path:"home", component:DashboardComponent},
       {path:"forms", component:FormsComponent},
-      {path:"button", component:ButtonsComponent},
+      {path:"Lawyers", component:LawyerGridComponent},
       {path:"detaille-folder/:id",component:DetailleFolderComponent}
     ]
   },
