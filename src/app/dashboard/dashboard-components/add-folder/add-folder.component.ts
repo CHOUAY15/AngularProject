@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { AddNewOptionDialogComponent } from '../add-new-option-dialog/add-new-option-dialog.component';
 
 @Component({
   selector: 'app-add-folder',
@@ -8,6 +9,7 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrl: './add-folder.component.scss'
 })
 export class AddFolderComponent implements OnInit {
+
   fileForm!: FormGroup;
   currentStep = 0;
   totalSteps = 3;
@@ -23,7 +25,8 @@ export class AddFolderComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    public dialogRef: MatDialogRef<AddFolderComponent>
+    public dialogRef: MatDialogRef<AddFolderComponent>,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -44,6 +47,110 @@ export class AddFolderComponent implements OnInit {
       feesCollected: [false],
       lawyer: ['', Validators.required],
       time: ['', Validators.required]
+    });
+  }
+
+  addNewOption(field: string) {
+    let dialogConfig;
+    switch (field) {
+      case 'court':
+        dialogConfig = {
+          title: 'إضافة محكمة جديدة',
+          fields: [
+            { name: 'name', label: 'اسم المحكمة', validators: [Validators.required] },
+            { name: 'location', label: 'الموقع', validators: [Validators.required] }
+          ]
+        };
+        break;
+      case 'judge':
+        dialogConfig = {
+          title: 'إضافة قاضي جديد',
+          fields: [
+            { name: 'name', label: 'اسم القاضي', validators: [Validators.required] },
+            { name: 'specialization', label: 'التخصص' }
+          ]
+        };
+        break;
+      case 'procedureType':
+        dialogConfig = {
+          title: 'إضافة نوع إجراء جديد',
+          fields: [
+            { name: 'name', label: 'اسم الإجراء', validators: [Validators.required] },
+            { name: 'description', label: 'الوصف' }
+          ]
+        };
+        break;
+      case 'parties':
+        dialogConfig = {
+          title: 'إضافة طرف جديد',
+          fields: [
+            { name: 'name', label: 'اسم الطرف', validators: [Validators.required] },
+            { name: 'type', label: 'نوع الطرف' },
+            { name: 'contact', label: 'معلومات الاتصال' }
+          ]
+        };
+        break;
+      case 'propertyReference':
+        dialogConfig = {
+          title: 'إضافة مرجع عقاري جديد',
+          fields: [
+            { name: 'reference', label: 'المرجع', validators: [Validators.required] },
+            { name: 'address', label: 'العنوان' },
+            { name: 'area', label: 'المساحة', type: 'number' }
+          ]
+        };
+        break;
+      case 'lawyer':
+        dialogConfig = {
+          title: 'إضافة محامي جديد',
+          fields: [
+            { name: 'name', label: 'اسم المحامي', validators: [Validators.required] },
+            { name: 'barNumber', label: 'رقم المحاماة' },
+            { name: 'specialization', label: 'التخصص' }
+          ]
+        };
+        break;
+      default:
+        return;
+    }
+
+    const dialogRef = this.dialog.open(AddNewOptionDialogComponent, {
+      width: '400px',
+      data: dialogConfig
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        switch (field) {
+          case 'court':
+            this.courts.push(result.name);
+            this.fileForm.get('court')?.setValue(result.name);
+            break;
+          case 'judge':
+            this.judges.push(result.name);
+            this.fileForm.get('judge')?.setValue(result.name);
+            break;
+          case 'procedureType':
+            this.procedureTypes.push(result.name);
+            this.fileForm.get('procedureType')?.setValue(result.name);
+            break;
+          case 'parties':
+            this.parties.push(result.name);
+            const currentParties = this.fileForm.get('parties')?.value || [];
+            this.fileForm.get('parties')?.setValue([...currentParties, result.name]);
+            break;
+          case 'propertyReference':
+            this.propertyReferences.push(result.reference);
+            this.fileForm.get('propertyReference')?.setValue(result.reference);
+            break;
+          case 'lawyer':
+            this.lawyers.push(result.name);
+            this.fileForm.get('lawyer')?.setValue(result.name);
+            break;
+        }
+        // You might want to save the full result object to your backend or local storage
+        console.log('New option added:', result);
+      }
     });
   }
 

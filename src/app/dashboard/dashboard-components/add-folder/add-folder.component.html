@@ -14,6 +14,7 @@
           <mat-label>المحكمة</mat-label>
           <mat-select formControlName="court" required>
             <mat-option *ngFor="let court of courts" [value]="court">{{court}}</mat-option>
+            <mat-option (click)="addNewOption('court')">+ إضافة محكمة جديدة</mat-option>
           </mat-select>
         </mat-form-field>
 
@@ -29,13 +30,15 @@
           <mat-label>القاضي المقرر</mat-label>
           <mat-select formControlName="judge" required>
             <mat-option *ngFor="let judge of judges" [value]="judge">{{judge}}</mat-option>
+            <mat-option (click)="addNewOption('judge')">+ إضافة قاضي جديد</mat-option>
           </mat-select>
-        </mat-form-field>
+        </mat-form-field> 
 
         <mat-form-field appearance="outline">
           <mat-label>نوع الإجراء</mat-label>
           <mat-select formControlName="procedureType" required>
             <mat-option *ngFor="let type of procedureTypes" [value]="type">{{type}}</mat-option>
+            <mat-option (click)="addNewOption('procedureType')">+ إضافة نوع إجراء جديد</mat-option>
           </mat-select>
         </mat-form-field>
 
@@ -43,6 +46,7 @@
           <mat-label>الأطراف</mat-label>
           <mat-select formControlName="parties" required multiple>
             <mat-option *ngFor="let party of parties" [value]="party">{{party}}</mat-option>
+            <mat-option (click)="addNewOption('parties')">+ إضافة طرف جديد</mat-option>
           </mat-select>
         </mat-form-field>
 
@@ -70,6 +74,7 @@
           <mat-label>المرجع العقاري</mat-label>
           <mat-select formControlName="propertyReference" required>
             <mat-option *ngFor="let ref of propertyReferences" [value]="ref">{{ref}}</mat-option>
+            <mat-option (click)="addNewOption('propertyReference')">+ إضافة مرجع عقاري جديد</mat-option>
           </mat-select>
         </mat-form-field>
 
@@ -88,6 +93,7 @@
           <mat-label>المحامي</mat-label>
           <mat-select formControlName="lawyer" required>
             <mat-option *ngFor="let lawyer of lawyers" [value]="lawyer">{{lawyer}}</mat-option>
+            <mat-option (click)="addNewOption('lawyer')">+ إضافة محامي جديد</mat-option>
           </mat-select>
         </mat-form-field>
 
@@ -117,10 +123,10 @@
        إلغاء
       </button>
       <div>
-        <button class="btn btn-primary text-white me-2" (click)="prevStep()" [disabled]="currentStep === 0">
+        <button class="btn  text-primary me-2" (click)="prevStep()" [disabled]="currentStep === 0">
           <i class="bi bi-chevron-right me-1"></i>السابق
         </button>
-        <button class="btn btn-primary text-white" (click)="nextStep()" [disabled]="isLastStep() && !fileForm.valid">
+        <button class="btn  text-primary" (click)="nextStep()" [disabled]="isLastStep() && !fileForm.valid">
           <span *ngIf="!isLastStep()">
             التالي<i class="bi bi-chevron-left ms-1"></i>
           </span>

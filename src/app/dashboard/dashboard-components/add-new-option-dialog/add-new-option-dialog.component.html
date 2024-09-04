@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>{{data.title}}</h2>
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <ng-container *ngFor="let field of data.fields">
+      <mat-form-field appearance="outline">
+        <mat-label>{{field.label}}</mat-label>
+        <input matInput [formControlName]="field.name" [type]="field.type || 'text'">
+      </mat-form-field>
+    </ng-container>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">إلغاء</button>
+  <button mat-button [mat-dialog-close]="form.value" [disabled]="!form.valid">إضافة</button>
+</mat-dialog-actions>

@@ -19,6 +19,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterModule } from '@angular/router';
+import { AddNewOptionDialogComponent } from './dashboard-components/add-new-option-dialog/add-new-option-dialog.component';
 
 
 
@@ -28,7 +29,8 @@ import { Router, RouterModule } from '@angular/router';
     DashboardComponent,
     FolderListComponent,
     CardFolderComponent,
-    AddFolderComponent
+    AddFolderComponent,
+    AddNewOptionDialogComponent
 
   ],
   imports: [
@@ -53,7 +55,8 @@ import { Router, RouterModule } from '@angular/router';
     DashboardComponent,
     FolderListComponent,
     CardFolderComponent,
-    AddFolderComponent
+    AddFolderComponent,
+    AddNewOptionDialogComponent
 
   ]
 })
