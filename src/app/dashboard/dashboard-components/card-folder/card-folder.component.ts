@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Folder } from 'src/app/shared/models/folder';
 import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { UpdateFolderComponent } from '../update-folder/update-folder.component';
 
 @Component({
   selector: 'app-card-folder',
@@ -17,9 +18,21 @@ export class CardFolderComponent {
     private route: ActivatedRoute,
     private dialog: MatDialog
   ) {}
-onUpdate() {
-throw new Error('Method not implemented.');
-}
+  onUpdate() {
+    const dialogRef = this.dialog.open(UpdateFolderComponent, {
+      width: '600px',
+      data: { folder: { ...this.folder } } // Pass a copy of the folder to avoid direct mutations
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // User confirmed update
+        console.log('Updating folder:', result);
+        // Implement your update logic here
+        // For example: this.folderService.updateFolder(result);
+      }
+    });
+  }
 onDelete() {
   const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
     width: '350px',

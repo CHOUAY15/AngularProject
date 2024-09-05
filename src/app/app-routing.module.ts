@@ -13,6 +13,7 @@ import { CourtGridComponent } from './dashboard/dashboard-components/court-grid/
 import { JudgeGridComponent } from './dashboard/dashboard-components/judge-grid/judge-grid.component';
 import { ProcedureGridComponent } from './dashboard/dashboard-components/procedure-grid/procedure-grid.component';
 import { TopicGridComponent } from './dashboard/dashboard-components/topic-grid/topic-grid.component';
+import { PartyGridComponent } from './dashboard/dashboard-components/party-grid/party-grid.component';
 
 const routes: Routes = [
   {
@@ -26,7 +27,9 @@ const routes: Routes = [
       {path:"grid-list",component:CourtGridComponent},
       {path:"alerts",component:JudgeGridComponent},
       {path:"menu",component:ProcedureGridComponent},
-      {path:"table",component:TopicGridComponent}
+      {path:"table",component:TopicGridComponent},
+      {path:"lawyers/:fileNum/:id",component:LawyerGridComponent},
+      {path:"parties/:fileNum/:id",component:PartyGridComponent}
 
     ]
   },

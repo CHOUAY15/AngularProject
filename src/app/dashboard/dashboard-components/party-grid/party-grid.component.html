@@ -1,0 +1,141 @@
+<!-- party-grid.component.html -->
+<div class="container mt-4" dir="rtl">
+    <h2 class="mb-4 text-black">جدول بيانات الأطراف الملف رقم: {{ fileNum }}</h2>
+  
+    <!-- Add new party form -->
+    <div class="card mb-4">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">إضافة طرف جديد</h5>
+      </div>
+      <div class="card-body">
+        <form (ngSubmit)="addParty()" class="mb-0">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>الاسم الكامل</mat-label>
+                <input matInput [(ngModel)]="newParty.fullName" name="fullName" required>
+                <mat-hint>أدخل الاسم الكامل للطرف</mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>العنوان</mat-label>
+                <input matInput [(ngModel)]="newParty.adresse" name="adresse" required>
+                <mat-hint>أدخل عنوان الطرف</mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>الصفة</mat-label>
+                <mat-select [(ngModel)]="newParty.feature" name="feature" required>
+                  <mat-option *ngFor="let feature of features" [value]="feature">
+                    {{feature.description}}
+                  </mat-option>
+                </mat-select>
+                <mat-hint>اختر صفة الطرف</mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="col-md-1">
+              <button mat-raised-button type="submit" class="w-100 bg-primary text-white">إضافة</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  
+    <!-- Parties table -->
+    <div class="card">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">قائمة الأطراف</h5>
+      </div>
+      <div class="card-body p-0">
+        <div class="mat-elevation-z8 table-container">
+          <mat-table [dataSource]="dataSource" class="parties-table">
+            <!-- ID Column -->
+            <ng-container matColumnDef="id">
+              <mat-header-cell *matHeaderCellDef class="fw-bold">الرقم</mat-header-cell>
+              <mat-cell *matCellDef="let party">{{party.id}}</mat-cell>
+            </ng-container>
+  
+            <!-- Full Name Column -->
+            <ng-container matColumnDef="fullName">
+              <mat-header-cell *matHeaderCellDef class="fw-bold">الاسم الكامل</mat-header-cell>
+              <mat-cell *matCellDef="let party">
+                <ng-container *ngIf="!isEditing(party); else editFullName">
+                  {{party.fullName}}
+                </ng-container>
+                <ng-template #editFullName>
+                  <mat-form-field appearance="outline">
+                    <input matInput [(ngModel)]="editingParty!.fullName">
+                  </mat-form-field>
+                </ng-template>
+              </mat-cell>
+            </ng-container>
+  
+            <!-- Address Column -->
+            <ng-container matColumnDef="adresse">
+              <mat-header-cell *matHeaderCellDef class="fw-bold">العنوان</mat-header-cell>
+              <mat-cell *matCellDef="let party">
+                <ng-container *ngIf="!isEditing(party); else editAdresse">
+                  {{party.adresse}}
+                </ng-container>
+                <ng-template #editAdresse>
+                  <mat-form-field appearance="outline">
+                    <input matInput [(ngModel)]="editingParty!.adresse">
+                  </mat-form-field>
+                </ng-template>
+              </mat-cell>
+            </ng-container>
+  
+            <!-- Feature Column -->
+            <ng-container matColumnDef="feature">
+              <mat-header-cell *matHeaderCellDef class="fw-bold">الصفة</mat-header-cell>
+              <mat-cell *matCellDef="let party">
+                <ng-container *ngIf="!isEditing(party); else editFeature">
+                  {{party.feature.description}}
+                </ng-container>
+                <ng-template #editFeature>
+                  <mat-form-field appearance="outline">
+                    <mat-select [(ngModel)]="editingParty!.feature">
+                      <mat-option *ngFor="let feature of features" [value]="feature">
+                        {{feature.description}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </ng-template>
+              </mat-cell>
+            </ng-container>
+  
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+              <mat-header-cell *matHeaderCellDef class="text-danger fw-bold">الإجراءات</mat-header-cell>
+              <mat-cell *matCellDef="let party">
+                <ng-container *ngIf="!isEditing(party); else editActions">
+                  <button mat-icon-button color="primary" (click)="editParty(party)" matTooltip="تعديل">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" (click)="deleteParty(party.id)" matTooltip="حذف">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </ng-container>
+                <ng-template #editActions>
+                  <button mat-icon-button color="primary" (click)="updateParty()" matTooltip="حفظ التغييرات">
+                    <mat-icon>check</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" (click)="cancelEdit()" matTooltip="إلغاء التعديل">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </ng-template>
+              </mat-cell>
+            </ng-container>
+  
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+  
+          <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
+          </mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>

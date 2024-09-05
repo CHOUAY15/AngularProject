@@ -34,7 +34,6 @@ export class Folder {
   constructor(
     public fileNumber: string,
     public court: Court,
-    public subject: string,
     public judge: Judge,
     public procedureType: ProcedureType,
     public parties: Parties,
@@ -47,6 +46,7 @@ export class Folder {
     public accountNumber: string,
     public feesCollected: boolean,
     public lawyer: Lawyer,
-    public time: Time
+    public time: Time,
+    public topic:Topic
   ) {}
 }

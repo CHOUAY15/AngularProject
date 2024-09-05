@@ -74,13 +74,21 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" *ngIf="paginatedFolders.length > 0">
     <div class="col-md-4 mb-4" *ngFor="let folder of paginatedFolders">
       <div >
         <app-card-folder [folder]="folder"></app-card-folder>
       </div>
     </div>
   </div>
+
+  <!-- If there are no folders, show message -->
+  <div class="row" *ngIf="paginatedFolders.length === 0">
+    <div class="col-12 text-center">
+      <h5>لا توجد ملفات. قم بإنشاء واحد!</h5>
+    </div>
+  </div>
+
 
   <div class="d-flex justify-content-center mt-4">
     <nav aria-label="Folder navigation">

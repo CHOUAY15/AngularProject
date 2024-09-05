@@ -2,6 +2,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Lawyer } from 'src/app/shared/models/folder';
 
 @Component({
@@ -14,10 +15,11 @@ export class LawyerGridComponent implements OnInit {
   dataSource: MatTableDataSource<Lawyer>;
   newLawyer: Lawyer = { id: 0, authority: '', fullName: '' };
   editingLawyer: Lawyer | null = null;
+  fileNum:any;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor() {
+  constructor(private route:ActivatedRoute) {
     // Mock data, replace with actual data fetching logic
     const initialData = [
       { id: 1, authority: 'نقابة المحامين أ', fullName: 'محمد أحمد' },
@@ -31,7 +33,12 @@ export class LawyerGridComponent implements OnInit {
     this.dataSource = new MatTableDataSource(initialData);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.route.paramMap.subscribe(params => {
+       this.fileNum = params.get('fileNum');
+   
+    });
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;

@@ -30,6 +30,10 @@ import { CourtGridComponent } from './dashboard-components/court-grid/court-grid
 import { JudgeGridComponent } from './dashboard-components/judge-grid/judge-grid.component';
 import { ProcedureGridComponent } from './dashboard-components/procedure-grid/procedure-grid.component';
 import { TopicGridComponent } from './dashboard-components/topic-grid/topic-grid.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { PartyGridComponent } from './dashboard-components/party-grid/party-grid.component';
+import { UpdateFolderComponent } from './dashboard-components/update-folder/update-folder.component';
+import { InvitOptionDialogComponent } from './dashboard-components/detaille-folder/invit-option-dialog/invit-option-dialog.component';
 
 
 
@@ -48,7 +52,10 @@ import { TopicGridComponent } from './dashboard-components/topic-grid/topic-grid
     CourtGridComponent,
     JudgeGridComponent,
     ProcedureGridComponent,
-    TopicGridComponent
+    TopicGridComponent,
+    PartyGridComponent,
+    UpdateFolderComponent,
+    InvitOptionDialogComponent
 
   ],
   imports: [
@@ -59,17 +66,19 @@ import { TopicGridComponent } from './dashboard-components/topic-grid/topic-grid
     MatDialogModule,
     MatButtonModule,
     MatInputModule,
-    MatFormFieldModule,
+
     MatStepperModule,
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatCheckboxModule,
     ReactiveFormsModule,
-    MatIconModule,
     RouterModule,
     MatTableModule,
     MatPaginatorModule,
+    MatChipsModule,
+    MatFormFieldModule,
+    MatIconModule,
   ],
   exports: [
     DashboardComponent,
@@ -84,7 +93,10 @@ import { TopicGridComponent } from './dashboard-components/topic-grid/topic-grid
     CourtGridComponent,
     JudgeGridComponent,
     ProcedureGridComponent,
-    TopicGridComponent
+    TopicGridComponent,
+    PartyGridComponent,
+    UpdateFolderComponent,
+    InvitOptionDialogComponent
 
   ]
 })

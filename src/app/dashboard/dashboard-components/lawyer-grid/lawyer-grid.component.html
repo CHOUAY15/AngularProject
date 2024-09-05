@@ -1,6 +1,6 @@
 <!-- lawyer-grid.component.html -->
 <div class="container mt-4" dir="rtl">
-    <h2 class="mb-4 text-black">جدول بيانات المحامين</h2>
+    <h2 class="mb-4 text-black">  جدول بيانات المحامين الملف رقم :{{ fileNum }}</h2>
     
     
     <!-- Add new lawyer form -->
@@ -20,9 +20,9 @@
             </div>
             <div class="col-md-5">
               <mat-form-field appearance="outline" class="w-100">
-                <mat-label>السلطة</mat-label>
+                <mat-label>الهيئة</mat-label>
                 <input matInput [(ngModel)]="newLawyer.authority" name="authority" required>
-                <mat-hint>أدخل اسم السلطة القضائية</mat-hint>
+                <mat-hint>أدخل اسم الهيئة </mat-hint>
               </mat-form-field>
             </div>
             <div class="col-md-2">
@@ -64,7 +64,7 @@
   
             <!-- Authority Column -->
             <ng-container matColumnDef="authority">
-              <mat-header-cell *matHeaderCellDef class="fw-bold">السلطة</mat-header-cell>
+              <mat-header-cell *matHeaderCellDef class="fw-bold">الهيئة</mat-header-cell>
               <mat-cell *matCellDef="let lawyer">
                 <ng-container *ngIf="!isEditing(lawyer); else editAuthority">
                   {{lawyer.authority}}
