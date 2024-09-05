@@ -110,7 +110,7 @@ export class AddFolderComponent implements OnInit {
               label: 'الاسم الكامل للقاضي ',
               validators: [Validators.required],
             },
-            { name: 'gender', label: ' صفة القاضي (استاذ / استاذة)' },
+            { name: 'gender', label: ' صفة القاضي (استاذ / استاذة)' , type:"dropDown",list:['استاذ ','استاذة'],validators: [Validators.required]},
           ],
         };
         break;
@@ -122,6 +122,7 @@ export class AddFolderComponent implements OnInit {
               name: 'name',
               label: 'وصف الإجراء ',
               validators: [Validators.required],
+              type:"dropDown",list:['تنازل ','تنفيذ']
             },
           ],
         };
