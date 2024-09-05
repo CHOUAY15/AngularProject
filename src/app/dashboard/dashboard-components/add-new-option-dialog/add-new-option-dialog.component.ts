@@ -15,7 +15,7 @@ export class AddNewOptionDialogComponent {
     public dialogRef: MatDialogRef<AddNewOptionDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { 
       title: string, 
-      fields: {name: string, label: string, type?: string, validators?: any[]}[]
+      fields: {name: string, label: string, type?: string,list?:any[], validators?: any[]}[]
     },
     private fb: FormBuilder
   ) {

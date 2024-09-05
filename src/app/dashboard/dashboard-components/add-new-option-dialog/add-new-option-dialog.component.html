@@ -4,7 +4,22 @@
     <ng-container *ngFor="let field of data.fields">
       <mat-form-field appearance="outline">
         <mat-label>{{field.label}}</mat-label>
-        <input matInput [formControlName]="field.name" [type]="field.type || 'text'">
+
+        <ng-container [ngSwitch]="field.type">
+
+          <!-- Input field for all types except 'dropDown' -->
+          <input *ngSwitchDefault matInput [formControlName]="field.name" [type]="field.type || 'text'">
+
+          <!-- Dropdown field for 'dropDown' type -->
+          <mat-select *ngSwitchCase="'dropDown'" [formControlName]="field.name">
+            <!-- Check if the list contains objects or strings -->
+            <mat-option *ngFor="let option of field.list" [value]="option.value || option">
+              {{option.label || option}}
+            </mat-option>
+          </mat-select>
+
+        </ng-container>
+
       </mat-form-field>
     </ng-container>
   </form>

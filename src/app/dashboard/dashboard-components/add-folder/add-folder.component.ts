@@ -1,27 +1,33 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AddNewOptionDialogComponent } from '../add-new-option-dialog/add-new-option-dialog.component';
 
 @Component({
   selector: 'app-add-folder',
   templateUrl: './add-folder.component.html',
-  styleUrl: './add-folder.component.scss'
+  styleUrl: './add-folder.component.scss',
 })
 export class AddFolderComponent implements OnInit {
-
   fileForm!: FormGroup;
   currentStep = 0;
   totalSteps = 3;
-  
 
   courts: string[] = ['محكمة 1', 'محكمة 2', 'محكمة 3']; // Replace with actual court options
   judges: string[] = ['قاضي 1', 'قاضي 2', 'قاضي 3']; // Replace with actual judge options
   procedureTypes: string[] = ['إجراء 1', 'إجراء 2', 'إجراء 3']; // Replace with actual procedure types
-  parties: string[] = ['طرف 1', 'طرف 2', 'طرف 3']; // Replace with actual parties
-  propertyReferences: string[] = ['مرجع 1', 'مرجع 2', 'مرجع 3']; // Replace with actual property references
-  lawyers: string[] = ['محامي 1', 'محامي 2', 'محامي 3']; // Replace with actual lawyers
-  hours: string[] = ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00']; // Add more hours as needed
+  hours: string[] = [
+    '09:00 صباحا',
+    '10:00 صباحا',
+    '11:00 صباحا',
+    '12:00 صباحا',
+    '13:00 زوالا',
+    '14:00 زوالا',
+    '15:00 زوالا',
+    '16:00 زوالا',
+    '17:00 زوالا',
+  ]; // Add more hours as needed
+  topics: string[] = ['ضرب وجرح', ' طلاق']; // Replace with actual topics
 
   constructor(
     private fb: FormBuilder,
@@ -33,23 +39,48 @@ export class AddFolderComponent implements OnInit {
     this.fileForm = this.fb.group({
       fileNumber: ['', Validators.required],
       court: ['', Validators.required],
-      subject: ['', Validators.required],
       judge: ['', Validators.required],
       procedureType: ['', Validators.required],
-      parties: ['', Validators.required],
+      parties: this.fb.array([]),
       preliminaryJudgment: [''],
       fees: [null, [Validators.required, Validators.min(0)]],
       expertiseDate: [null, Validators.required],
-      propertyReference: ['', Validators.required],
+      propertyReference: ['عقار غير محفظ', Validators.required],
       expertReportSubmitted: [false],
       expenseSheetSubmitted: [false],
       accountNumber: [''],
       feesCollected: [false],
-      lawyer: ['', Validators.required],
-      time: ['', Validators.required]
+      lawyers: this.fb.array([]),
+      time: ['', Validators.required],
+      topic: ['', Validators.required],
     });
   }
 
+  get parties() {
+    return this.fileForm.get('parties') as FormArray;
+  }
+
+  get lawyers() {
+    return this.fileForm.get('lawyers') as FormArray;
+  }
+
+  addParty() {
+    const partyControl = this.fb.control('', Validators.required);
+    this.parties.push(partyControl);
+  }
+
+  removeParty(index: number) {
+    this.parties.removeAt(index);
+  }
+
+  addLawyer() {
+    const lawyerControl = this.fb.control('', Validators.required);
+    this.lawyers.push(lawyerControl);
+  }
+
+  removeLawyer(index: number) {
+    this.lawyers.removeAt(index);
+  }
   addNewOption(field: string) {
     let dialogConfig;
     switch (field) {
@@ -57,69 +88,87 @@ export class AddFolderComponent implements OnInit {
         dialogConfig = {
           title: 'إضافة محكمة جديدة',
           fields: [
-            { name: 'name', label: 'اسم المحكمة', validators: [Validators.required] },
-            { name: 'location', label: 'الموقع', validators: [Validators.required] }
-          ]
+            {
+              name: 'name',
+              label: 'اسم المحكمة',
+              validators: [Validators.required],
+            },
+            {
+              name: 'city',
+              label: 'المدينة',
+              validators: [Validators.required],
+            },
+          ],
         };
         break;
       case 'judge':
         dialogConfig = {
           title: 'إضافة قاضي جديد',
           fields: [
-            { name: 'name', label: 'اسم القاضي', validators: [Validators.required] },
-            { name: 'specialization', label: 'التخصص' }
-          ]
+            {
+              name: 'name',
+              label: 'الاسم الكامل للقاضي ',
+              validators: [Validators.required],
+            },
+            { name: 'gender', label: ' صفة القاضي (استاذ / استاذة)' },
+          ],
         };
         break;
       case 'procedureType':
         dialogConfig = {
           title: 'إضافة نوع إجراء جديد',
           fields: [
-            { name: 'name', label: 'اسم الإجراء', validators: [Validators.required] },
-            { name: 'description', label: 'الوصف' }
-          ]
+            {
+              name: 'name',
+              label: 'وصف الإجراء ',
+              validators: [Validators.required],
+            },
+          ],
+        };
+        break;
+      case 'topic':
+        dialogConfig = {
+          title: '   إضافة موضوع جديد',
+          fields: [
+            {
+              name: 'name',
+              label: 'وصف الموضوع  ',
+              validators: [Validators.required],
+              type:"dropDown",list:['نصب واحتيال']
+            },
+          ],
         };
         break;
       case 'parties':
         dialogConfig = {
-          title: 'إضافة طرف جديد',
+          title: 'إضافة طرف ',
           fields: [
             { name: 'name', label: 'اسم الطرف', validators: [Validators.required] },
-            { name: 'type', label: 'نوع الطرف' },
-            { name: 'contact', label: 'معلومات الاتصال' }
-          ]
-        };
-        break;
-      case 'propertyReference':
-        dialogConfig = {
-          title: 'إضافة مرجع عقاري جديد',
-          fields: [
-            { name: 'reference', label: 'المرجع', validators: [Validators.required] },
-            { name: 'address', label: 'العنوان' },
-            { name: 'area', label: 'المساحة', type: 'number' }
+            { name: 'feature', label: 'صفة الطرف',validators: [Validators.required] ,type:"dropDown",list:['مدعي','مستأنف']},
+           
           ]
         };
         break;
       case 'lawyer':
         dialogConfig = {
-          title: 'إضافة محامي جديد',
+          title: 'إضافة محامي ',
           fields: [
             { name: 'name', label: 'اسم المحامي', validators: [Validators.required] },
-            { name: 'barNumber', label: 'رقم المحاماة' },
-            { name: 'specialization', label: 'التخصص' }
+            
+            { name: 'authority', label: 'الهيئة',validators: [Validators.required] }
           ]
         };
         break;
       default:
         return;
     }
-
+  
     const dialogRef = this.dialog.open(AddNewOptionDialogComponent, {
       width: '400px',
-      data: dialogConfig
+      data: dialogConfig,
     });
-
-    dialogRef.afterClosed().subscribe(result => {
+  
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         switch (field) {
           case 'court':
@@ -134,22 +183,21 @@ export class AddFolderComponent implements OnInit {
             this.procedureTypes.push(result.name);
             this.fileForm.get('procedureType')?.setValue(result.name);
             break;
-          case 'parties':
-            this.parties.push(result.name);
-            const currentParties = this.fileForm.get('parties')?.value || [];
-            this.fileForm.get('parties')?.setValue([...currentParties, result.name]);
+          case 'topic':
+            this.topics.push(result.name);
+            this.fileForm.get('topic')?.setValue(result.name);
             break;
-          case 'propertyReference':
-            this.propertyReferences.push(result.reference);
-            this.fileForm.get('propertyReference')?.setValue(result.reference);
+          case 'parties':
+            this.addParty();
+            const lastPartyIndex = this.parties.length - 1;
+            this.parties.at(lastPartyIndex).setValue(result.name);
             break;
           case 'lawyer':
-            this.lawyers.push(result.name);
-            this.fileForm.get('lawyer')?.setValue(result.name);
+            this.addLawyer();
+            const lastLawyerIndex = this.lawyers.length - 1;
+            this.lawyers.at(lastLawyerIndex).setValue(result.name);
             break;
         }
-        // You might want to save the full result object to your backend or local storage
-        console.log('New option added:', result);
       }
     });
   }
@@ -187,4 +235,4 @@ export class AddFolderComponent implements OnInit {
   isLastStep(): boolean {
     return this.currentStep === this.totalSteps - 1;
   }
-  }
+}
