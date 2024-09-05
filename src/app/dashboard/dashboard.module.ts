@@ -25,6 +25,11 @@ import { DeleteConfirmationDialogComponent } from './dashboard-components/card-f
 import { LawyerGridComponent } from './dashboard-components/lawyer-grid/lawyer-grid.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { FeatureGridComponent } from './dashboard-components/feature-grid/feature-grid.component';
+import { CourtGridComponent } from './dashboard-components/court-grid/court-grid.component';
+import { JudgeGridComponent } from './dashboard-components/judge-grid/judge-grid.component';
+import { ProcedureGridComponent } from './dashboard-components/procedure-grid/procedure-grid.component';
+import { TopicGridComponent } from './dashboard-components/topic-grid/topic-grid.component';
 
 
 
@@ -38,7 +43,12 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     AddNewOptionDialogComponent,
     DetailleFolderComponent,
     DeleteConfirmationDialogComponent,
-    LawyerGridComponent
+    LawyerGridComponent,
+    FeatureGridComponent,
+    CourtGridComponent,
+    JudgeGridComponent,
+    ProcedureGridComponent,
+    TopicGridComponent
 
   ],
   imports: [
@@ -69,7 +79,12 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     AddNewOptionDialogComponent,
     DetailleFolderComponent,
     DeleteConfirmationDialogComponent,
-    LawyerGridComponent
+    LawyerGridComponent,
+    FeatureGridComponent,
+    CourtGridComponent,
+    JudgeGridComponent,
+    ProcedureGridComponent,
+    TopicGridComponent
 
   ]
 })

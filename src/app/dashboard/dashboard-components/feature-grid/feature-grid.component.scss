@@ -1,0 +1,60 @@
+// Similar styles to your lawyer component, but tailored for "features"
+$primary-color: #007bff;
+$primary-light-color: #cfe5ff;
+
+.container {
+  max-width: 1000px;
+}
+
+h2 {
+  color: $primary-color;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.table-container {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.features-table {
+  width: 100%;
+}
+
+.mat-header-row {
+  background-color: $primary-color;
+}
+
+.mat-header-cell {
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.mat-row:nth-child(even) {
+  background-color: $primary-light-color;
+}
+
+.mat-row:hover {
+  background-color: darken($primary-light-color, 5%);
+}
+
+.mat-cell, .mat-header-cell {
+  padding: 12px 16px;
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
+
+  &:last-child {
+    border-right: none;
+  }
+}
+
+.mat-paginator {
+  background-color: $primary-light-color;
+}
+
+@media (max-width: 768px) {
+  .mat-cell, .mat-header-cell {
+    font-size: 0.8rem;
+    padding: 8px;
+  }
+}

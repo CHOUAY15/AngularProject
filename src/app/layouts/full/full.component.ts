@@ -34,36 +34,37 @@ export class FullComponent {
       icon: "home",
       menu: "الصفحة الرئيسية",
     },
+    // {
+    //   link: "/Lawyers",
+    //   icon: "user",
+    //   menu: "لائحة المحامين",
+    // },
     {
-      link: "/Lawyers",
+      link: "/alerts",
       icon: "user",
-      menu: "لائحة المحامين",
+      menu: "لائحة القضاة",
     },
     {
       link: "/forms",
       icon: "book",
-      menu: "لائحة الاطراف",
+      menu: "صفة الاطراف",
     },
-    // {
-    //   link: "/alerts",
-    //   icon: "info",
-    //   menu: "Alerts",
-    // },
-    // {
-    //   link: "/grid-list",
-    //   icon: "file-text",
-    //   menu: "Grid List",
-    // },
-    // {
-    //   link: "/menu",
-    //   icon: "menu",
-    //   menu: "Menus",
-    // },
-    // {
-    //   link: "/table",
-    //   icon: "grid",
-    //   menu: "Tables",
-    // },
+
+    {
+      link: "/grid-list",
+      icon: "file-text",
+      menu: "لائحة المحاكم",
+    },
+    {
+      link: "/menu",
+      icon: "menu",
+      menu: "لائحة الإجراءات",
+    },
+    {
+      link: "/table",
+      icon: "grid",
+      menu: "لائحة المواضيع",
+    },
     // {
     //   link: "/expansion",
     //   icon: "divide-circle",

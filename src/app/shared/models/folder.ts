@@ -1,7 +1,9 @@
 interface Court {
+  name:string
   city:string
 }
 interface Judge {
+  fullName:string
   gender:string
 }
 interface ProcedureType {
@@ -19,6 +21,13 @@ export interface Lawyer {
 }
 interface Time {
   title:string
+}
+ export interface Feature{
+  id:number;
+  description:string
+}
+export interface Topic{
+  description:string
 }
 
 export class Folder {

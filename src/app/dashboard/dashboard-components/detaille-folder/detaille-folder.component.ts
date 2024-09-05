@@ -14,9 +14,9 @@ export class DetailleFolderComponent  implements OnInit{
   ngOnInit(): void {
     this.folder = new Folder(
       "12123", // رقم الملف
-      { city: "الرباط" }, // المحكمة
+      { city: "الرباط",name:"" }, // المحكمة
       "قضية تجارية", // الموضوع
-      { gender: "أنثى" }, // القاضي
+      { gender: "أنثى",fullName:"" }, // القاضي
       { description: "مدني" }, // نوع الإجراء
       { fullName: "فاطمة الزهراء بن سعيد", adresse: "حي التقدم، الرباط" }, // الأطراف
       "الحكم الأولي صدر", // الحكم الأولي

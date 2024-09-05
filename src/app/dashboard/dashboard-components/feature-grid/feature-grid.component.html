@@ -1,0 +1,89 @@
+<div class="container mt-4" dir="rtl">
+    <h2 class="mb-4 text-black">جدول بيانات الصفات</h2>
+  
+    <!-- Add new feature form -->
+    <div class="card mb-4">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">إضافة صفة جديدة</h5>
+      </div>
+      <div class="card-body">
+        <form (ngSubmit)="addFeature()" class="mb-0">
+          <div class="row g-3">
+            <div class="col-md-10">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>الوصف</mat-label>
+                <input matInput [(ngModel)]="newFeature.description" name="description" required>
+                <mat-hint>أدخل وصف الصفة</mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="col-md-2">
+              <button mat-raised-button type="submit" class="w-100 bg-primary text-white">إضافة صفة</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  
+    <!-- Features table -->
+    <div class="card">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">قائمة الصفات</h5>
+      </div>
+      <div class="card-body p-0">
+        <div class="mat-elevation-z8 table-container">
+          <mat-table [dataSource]="dataSource" class="features-table">
+            <!-- ID Column -->
+            <ng-container matColumnDef="id">
+              <mat-header-cell *matHeaderCellDef class="fw-bold">الرقم</mat-header-cell>
+              <mat-cell *matCellDef="let feature">{{ feature.id }}</mat-cell>
+            </ng-container>
+  
+            <!-- Description Column -->
+            <ng-container matColumnDef="description">
+              <mat-header-cell *matHeaderCellDef class="fw-bold">الوصف</mat-header-cell>
+              <mat-cell *matCellDef="let feature">
+                <ng-container *ngIf="!isEditing(feature); else editDescription">
+                  {{ feature.description }}
+                </ng-container>
+                <ng-template #editDescription>
+                  <mat-form-field appearance="outline">
+                    <input matInput [(ngModel)]="editingFeature!.description">
+                  </mat-form-field>
+                </ng-template>
+              </mat-cell>
+            </ng-container>
+  
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+              <mat-header-cell *matHeaderCellDef class="text-danger fw-bold">الإجراءات</mat-header-cell>
+              <mat-cell *matCellDef="let feature">
+                <ng-container *ngIf="!isEditing(feature); else editActions">
+                  <button mat-icon-button color="primary" (click)="editFeature(feature)" matTooltip="تعديل">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" (click)="deleteFeature(feature.id)" matTooltip="حذف">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </ng-container>
+                <ng-template #editActions>
+                  <button mat-icon-button color="primary" (click)="updateFeature()" matTooltip="حفظ التغييرات">
+                    <mat-icon>check</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" (click)="cancelEdit()" matTooltip="إلغاء التعديل">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </ng-template>
+              </mat-cell>
+            </ng-container>
+  
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+  
+          <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
+          </mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+  

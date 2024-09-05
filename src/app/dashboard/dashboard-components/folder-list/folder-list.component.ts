@@ -11,9 +11,9 @@ export class FolderListComponent implements OnInit {
   folders: Folder[] = [
     new Folder(
       "12123", // رقم الملف
-      { city: "الرباط" }, // المحكمة
+      { city: "الرباط" ,name:""}, // المحكمة
       "قضية تجارية", // الموضوع
-      { gender: "أنثى" }, // القاضي
+      { gender: "أنثى" ,fullName:""}, // القاضي
       { description: "مدني" }, // نوع الإجراء
       { fullName: "فاطمة الزهراء بن سعيد", adresse: "حي التقدم، الرباط" }, // الأطراف
       "الحكم الأولي صدر", // الحكم الأولي
@@ -29,9 +29,9 @@ export class FolderListComponent implements OnInit {
     ),
     new Folder(
       "54321", // رقم الملف
-      { city: "فاس" }, // المحكمة
+      { city: "فاس" ,name:""}, // المحكمة
       "قضية عقارية", // الموضوع
-      { gender: "ذكر" }, // القاضي
+      { gender: "ذكر" ,fullName:""}, // القاضي
       { description: "عقاري" }, // نوع الإجراء
       { fullName: "سلمان بن عبد الله", adresse: "حي الأطلس، فاس" }, // الأطراف
       "الحكم الأولي لم يصدر بعد", // الحكم الأولي
@@ -47,9 +47,9 @@ export class FolderListComponent implements OnInit {
     ),
     new Folder(
       "67890", // رقم الملف
-      { city: "مراكش" }, // المحكمة
+      { city: "مراكش" ,name:""}, // المحكمة
       "قضية عمالية", // الموضوع
-      { gender: "ذكر" }, // القاضي
+      { gender: "ذكر",fullName:"" }, // القاضي
       { description: "عمالي" }, // نوع الإجراء
       { fullName: "نور الدين حمدون", adresse: "حي جليز، مراكش" }, // الأطراف
       "الحكم الأولي تم", // الحكم الأولي
@@ -65,9 +65,9 @@ export class FolderListComponent implements OnInit {
     ),
     new Folder(
       "98765", // رقم الملف
-      { city: "طنجة" }, // المحكمة
+      { city: "طنجة",name:"" }, // المحكمة
       "قضية تجارية", // الموضوع
-      { gender: "أنثى" }, // القاضي
+      { gender: "أنثى" ,fullName:""}, // القاضي
       { description: "تجاري" }, // نوع الإجراء
       { fullName: "سعاد الوردي", adresse: "حي البرنوصي، طنجة" }, // الأطراف
       "الحكم الأولي صدر", // الحكم الأولي
@@ -83,9 +83,9 @@ export class FolderListComponent implements OnInit {
     ),
     new Folder(
       "24680", // رقم الملف
-      { city: "أكادير" }, // المحكمة
+      { city: "أكادير" ,name:"aa"}, // المحكمة
       "قضية عقارية", // الموضوع
-      { gender: "ذكر" }, // القاضي
+      { gender: "ذكر",fullName:"" }, // القاضي
       { description: "عقاري" }, // نوع الإجراء
       { fullName: "يوسف ميراوي", adresse: "حي السلام، أكادير" }, // الأطراف
       "الحكم الأولي لم يصدر بعد", // الحكم الأولي
@@ -101,9 +101,9 @@ export class FolderListComponent implements OnInit {
     ),
     new Folder(
       "13579", // رقم الملف
-      { city: "الدار البيضاء" }, // المحكمة
+      { city: "الدار البيضاء" ,name:""}, // المحكمة
       "قضية عمالية", // الموضوع
-      { gender: "أنثى" }, // القاضي
+      { gender: "أنثى",fullName:"" }, // القاضي
       { description: "عمالي" }, // نوع الإجراء
       { fullName: "أسماء بن سودة", adresse: "حي مولاي يوسف، الدار البيضاء" }, // الأطراف
       "الحكم الأولي تم", // الحكم الأولي
@@ -119,9 +119,9 @@ export class FolderListComponent implements OnInit {
     ),
     new Folder(
       "86420", // رقم الملف
-      { city: "وجدة" }, // المحكمة
+      { city: "وجدة" ,name:""}, // المحكمة
       "قضية تجارية", // الموضوع
-      { gender: "ذكر" }, // القاضي
+      { gender: "ذكر",fullName:"" }, // القاضي
       { description: "مدني" }, // نوع الإجراء
       { fullName: "عبد الرحيم الطيب", adresse: "حي الربيع، وجدة" }, // الأطراف
       "الحكم الأولي صدر", // الحكم الأولي
@@ -137,9 +137,9 @@ export class FolderListComponent implements OnInit {
     ),
     new Folder(
       "90817", // رقم الملف
-      { city: "تطوان" }, // المحكمة
+      { city: "تطوان",name:"" }, // المحكمة
       "قضية عقارية", // الموضوع
-      { gender: "أنثى" }, // القاضي
+      { gender: "أنثى" ,fullName:""}, // القاضي
       { description: "عقاري" }, // نوع الإجراء
       { fullName: "سلمى العبدلي", adresse: "حي الصفا، تطوان" }, // الأطراف
       "الحكم الأولي لم يصدر بعد", // الحكم الأولي
@@ -155,9 +155,9 @@ export class FolderListComponent implements OnInit {
     ),
     new Folder(
       "45678", // رقم الملف
-      { city: "العيون" }, // المحكمة
+      { city: "العيون",name:"" }, // المحكمة
       "قضية عمالية", // الموضوع
-      { gender: "ذكر" }, // القاضي
+      { gender: "ذكر" ,fullName:""}, // القاضي
       { description: "عمالي" }, // نوع الإجراء
       { fullName: "سعيد الدرهم", adresse: "حي المطار، العيون" }, // الأطراف
       "الحكم الأولي تم", // الحكم الأولي

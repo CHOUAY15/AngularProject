@@ -1,0 +1,107 @@
+<div class="container mt-4" dir="rtl">
+    <h2 class="mb-4 text-black">جدول بيانات المحاكم</h2>
+  
+    <div class="card mb-4">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">إضافة محكمة جديدة</h5>
+      </div>
+      <div class="card-body">
+        <form (ngSubmit)="addCourt()" class="mb-0">
+          <div class="row g-3">
+            <div class="col-md-5">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>اسم المحكمة</mat-label>
+                <input matInput [(ngModel)]="newCourt.name" name="name" required>
+              </mat-form-field>
+            </div>
+            <div class="col-md-5">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>المدينة</mat-label>
+                <input matInput [(ngModel)]="newCourt.city" name="city" required>
+              </mat-form-field>
+            </div>
+            <div class="col-md-2">
+              <button mat-raised-button type="submit" class="w-100 bg-primary text-white">إضافة محكمة</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  
+    <div class="card">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">قائمة المحاكم</h5>
+      </div>
+      <div class="card-body p-0">
+        <div class="mat-elevation-z8 table-container">
+          <mat-table [dataSource]="dataSource" class="courts-table">
+            <!-- ID Column -->
+            <ng-container matColumnDef="id">
+              <mat-header-cell *matHeaderCellDef class="fw-bold">الرقم</mat-header-cell>
+              <mat-cell *matCellDef="let court">{{court.id}}</mat-cell>
+            </ng-container>
+  
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef class="fw-bold">اسم المحكمة</mat-header-cell>
+              <mat-cell *matCellDef="let court">
+                <ng-container *ngIf="!isEditing(court); else editName">
+                  {{court.name}}
+                </ng-container>
+                <ng-template #editName>
+                  <mat-form-field appearance="outline">
+                    <input matInput [(ngModel)]="editingCourt!.name">
+                  </mat-form-field>
+                </ng-template>
+              </mat-cell>
+            </ng-container>
+  
+            <!-- City Column -->
+            <ng-container matColumnDef="city">
+              <mat-header-cell *matHeaderCellDef class="fw-bold">المدينة</mat-header-cell>
+              <mat-cell *matCellDef="let court">
+                <ng-container *ngIf="!isEditing(court); else editCity">
+                  {{court.city}}
+                </ng-container>
+                <ng-template #editCity>
+                  <mat-form-field appearance="outline">
+                    <input matInput [(ngModel)]="editingCourt!.city">
+                  </mat-form-field>
+                </ng-template>
+              </mat-cell>
+            </ng-container>
+  
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+              <mat-header-cell *matHeaderCellDef class="text-danger fw-bold">الإجراءات</mat-header-cell>
+              <mat-cell *matCellDef="let court">
+                <ng-container *ngIf="!isEditing(court); else editActions">
+                  <button mat-icon-button color="primary" (click)="editCourt(court)" matTooltip="تعديل">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" (click)="deleteCourt(court.id)" matTooltip="حذف">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </ng-container>
+                <ng-template #editActions>
+                  <button mat-icon-button color="primary" (click)="updateCourt()" matTooltip="حفظ التغييرات">
+                    <mat-icon>check</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" (click)="cancelEdit()" matTooltip="إلغاء التعديل">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </ng-template>
+              </mat-cell>
+            </ng-container>
+  
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+  
+          <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
+          </mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+  
