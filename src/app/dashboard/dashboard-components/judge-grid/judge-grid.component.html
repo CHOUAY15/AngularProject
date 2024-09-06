@@ -1,147 +1,202 @@
 <div class="container mt-4" dir="rtl">
-    <h2 class="mb-4 text-black">جدول بيانات القضاة</h2>
-    <!-- Added description -->
-    <div class="alert alert-info mb-4">
-        <p class="mb-0">مرحبًا بك في نظام إدارة بيانات القضاة. هنا يمكنك إضافة قضاة جدد، وتعديل بياناتهم، وحذفهم عند الحاجة. استخدم النموذج أدناه لإضافة قاضي جديد، أو قم بالتعديل مباشرة في الجدول.</p>
-      </div>
-    
-  
-    <!-- Add new judge form -->
-    <div class="card mb-4">
-      <div class="card-header bg-primary text-white">
-        <h5 class="mb-0">إضافة قاضي جديد</h5>
-      </div>
-      <div class="card-body">
-        <form [formGroup]="judgeForm" (ngSubmit)="addJudge()" class="mb-0">
-          <div class="row g-3">
-            <div class="col-md-5">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>الاسم الكامل</mat-label>
-                <input matInput formControlName="fullName" required>
-                <mat-error *ngIf="judgeForm.get('fullName')?.hasError('required')">اسم القاضي مطلوب</mat-error>
-              <mat-error *ngIf="judgeForm.get('fullName')?.hasError('pattern')">لا يمكن إدخال أرقام في اسم القاضي</mat-error>
-                <mat-hint>أدخل الاسم الكامل للقاضي</mat-hint>
-              </mat-form-field>
-            </div>
-            <div class="col-md-5">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>الصفة</mat-label>
-                <mat-select formControlName="gender" required>
-                  <mat-option value="استاذ">استاذ</mat-option>
-                  <mat-option value="استاذة">استاذة</mat-option>
-                </mat-select>
-                <mat-error *ngIf="judgeForm.get('gender')?.hasError('required')">اسم الصفة مطلوب</mat-error>
-
-                <mat-hint>أدخل صفة القاضي (استاذ / استاذة)</mat-hint>
-              </mat-form-field>
-            </div>
-            
-            <div class="col-md-2">
-              <button mat-raised-button type="submit" class="w-100 bg-primary text-white">إضافة قاضي</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  
-    <!-- Judges table -->
-    <div class="card">
-      <div class="card-header bg-primary text-white">
-        <h5 class="mb-0">قائمة القضاة</h5>
-      </div>
-      <div class="card-body p-0">
-        <div class="mat-elevation-z8 table-container">
-          <ng-container *ngIf="dataSource.data.length === 0; else tableContent">
-            <p class="text-center">لا يوجد قضاة.  </p>
-          </ng-container>
-
-          <ng-template #tableContent>
-            <mat-table [dataSource]="dataSource" class="judges-table">
-              <!-- ID Column -->
-              <ng-container matColumnDef="id">
-                <mat-header-cell *matHeaderCellDef class="fw-bold">الرقم</mat-header-cell>
-                <mat-cell *matCellDef="let judge">{{judge.id}}</mat-cell>
-              </ng-container>
-    
-              <!-- Full Name Column -->
-              <ng-container matColumnDef="fullName">
-                <mat-header-cell *matHeaderCellDef class="fw-bold">الاسم الكامل</mat-header-cell>
-                <mat-cell *matCellDef="let judge">
-                  <ng-container *ngIf="!isEditing(judge); else editFullName">
-                    {{judge.fullName}}
-                  </ng-container>
-                  <ng-template #editFullName>
-                    <mat-form-field appearance="outline">
-                      <input matInput [formControl]="editFullNameControl">
-                      <mat-error *ngIf="editFullNameControl.hasError('required')">اسم القاضي مطلوب</mat-error>
-                      <mat-error *ngIf="editFullNameControl.hasError('pattern')">لا يمكن إدخال أرقام في اسم القاضي</mat-error>
-                    </mat-form-field>
-                  </ng-template>
-                </mat-cell>
-              </ng-container>
-    
-              <!-- Gender Column -->
-              <ng-container matColumnDef="gender">
-                <mat-header-cell *matHeaderCellDef class="fw-bold">الصفة</mat-header-cell>
-                <mat-cell *matCellDef="let judge">
-                  <ng-container *ngIf="!isEditing(judge); else editGender">
-                    {{judge.gender}}
-                  </ng-container>
-                  <ng-template #editGender>
-                    <mat-form-field appearance="outline">
-                      <mat-select [formControl]="editGenderControl" required>
-                        <mat-option value="استاذ">استاذ</mat-option>
-                        <mat-option value="استاذة">استاذة</mat-option>
-                      </mat-select>
-                      <mat-error *ngIf="editGenderControl.hasError('required')">اسم الصفة مطلوب</mat-error>
-  
-                    </mat-form-field>
-                  </ng-template>
-                </mat-cell>
-              </ng-container>
-    
-              <!-- Actions Column -->
-              <ng-container matColumnDef="actions">
-                <mat-header-cell *matHeaderCellDef class="text-danger fw-bold">الإجراءات</mat-header-cell>
-                <mat-cell *matCellDef="let judge">
-                  <ng-container *ngIf="!isEditing(judge); else editActions">
-                    <button mat-icon-button color="primary" (click)="editJudge(judge)" matTooltip="تعديل">
-                      <mat-icon>edit</mat-icon>
-                    </button>
-                    <button mat-icon-button color="warn" (click)="deleteJudge(judge.id,judge.fullName)" matTooltip="حذف">
-                      <mat-icon>delete</mat-icon>
-                    </button>
-                  </ng-container>
-                  <ng-template #editActions>
-                    <button mat-icon-button color="primary" (click)="updateJudge()" matTooltip="حفظ التغييرات" [disabled]="editFullNameControl.invalid || editGenderControl.invalid">
-                      <mat-icon>check</mat-icon>
-                    </button>
-                    <button mat-icon-button color="warn" (click)="cancelEdit()" matTooltip="إلغاء التعديل">
-                      <mat-icon>close</mat-icon>
-                    </button>
-                  </ng-template>
-                </mat-cell>
-              </ng-container>
-    
-              <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-            </mat-table>
-
-          </ng-template>
-      
-  
-          <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
-          </mat-paginator>
-        </div>
-      </div>
-    </div>
-    <div class="mt-4 text-muted">
-        <p><strong>ملاحظات:</strong></p>
-        <ul>
-          <li>يمكنك تعديل بيانات القاضي بالضغط على أيقونة القلم في عمود الإجراءات.</li>
-          <li>لحذف قاض من القائمة، اضغط على أيقونة سلة المهملات.</li>
-          <li>استخدم شريط التنقل أسفل الجدول للتنقل بين الصفحات وتغيير عدد العناصر المعروضة.</li>
-        </ul>
-      </div>
+  <h2 class="mb-4 text-black">جدول بيانات القضاة</h2>
+  <!-- Added description -->
+  <div class="alert alert-info mb-4">
+    <p class="mb-0">
+      مرحبًا بك في نظام إدارة بيانات القضاة. هنا يمكنك إضافة قضاة جدد، وتعديل
+      بياناتهم، وحذفهم عند الحاجة. استخدم النموذج أدناه لإضافة قاضي جديد، أو قم
+      بالتعديل مباشرة في الجدول.
+    </p>
   </div>
-  
+
+  <!-- Add new judge form -->
+  <div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">إضافة قاضي جديد</h5>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="judgeForm" (ngSubmit)="addJudge()" class="mb-0">
+        <div class="row g-3">
+          <div class="col-md-5">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>الاسم الكامل</mat-label>
+              <input matInput formControlName="fullName" required />
+              <mat-error *ngIf="judgeForm.get('fullName')?.hasError('required')"
+                >اسم القاضي مطلوب</mat-error
+              >
+              <mat-error *ngIf="judgeForm.get('fullName')?.hasError('pattern')"
+                >لا يمكن إدخال أرقام في اسم القاضي</mat-error
+              >
+              <mat-hint>أدخل الاسم الكامل للقاضي</mat-hint>
+            </mat-form-field>
+          </div>
+          <div class="col-md-5">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>الصفة</mat-label>
+              <mat-select formControlName="gender" required>
+                <mat-option value="استاذ">استاذ</mat-option>
+                <mat-option value="استاذة">استاذة</mat-option>
+              </mat-select>
+              <mat-error *ngIf="judgeForm.get('gender')?.hasError('required')"
+                >اسم الصفة مطلوب</mat-error
+              >
+
+              <mat-hint>أدخل صفة القاضي (استاذ / استاذة)</mat-hint>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-2">
+            <button
+              mat-raised-button
+              type="submit"
+              class="w-100 bg-primary text-white"
+            >
+              إضافة قاضي
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Judges table -->
+  <div class="card">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">قائمة القضاة</h5>
+    </div>
+    <div class="card-body p-0">
+      <div class="mat-elevation-z8 table-container">
+        <ng-container *ngIf="dataSource.data.length === 0; else tableContent">
+          <p class="text-center">لا يوجد قضاة.</p>
+        </ng-container>
+
+        <ng-template #tableContent>
+          <mat-table [dataSource]="dataSource" class="judges-table">
+            <!-- ID Column -->
+            <ng-container matColumnDef="id">
+              <mat-header-cell *matHeaderCellDef class="fw-bold"
+                >الرقم</mat-header-cell
+              >
+              <mat-cell *matCellDef="let judge">{{ judge.id }}</mat-cell>
+            </ng-container>
+
+            <!-- Full Name Column -->
+            <ng-container matColumnDef="fullName">
+              <mat-header-cell *matHeaderCellDef class="fw-bold"
+                >الاسم الكامل</mat-header-cell
+              >
+              <mat-cell *matCellDef="let judge">
+                <ng-container *ngIf="!isEditing(judge); else editFullName">
+                  {{ judge.fullName }}
+                </ng-container>
+                <ng-template #editFullName>
+                  <mat-form-field appearance="outline">
+                    <input matInput [formControl]="editFullNameControl" />
+                    <mat-error *ngIf="editFullNameControl.hasError('required')"
+                      >اسم القاضي مطلوب</mat-error
+                    >
+                    <mat-error *ngIf="editFullNameControl.hasError('pattern')"
+                      >لا يمكن إدخال أرقام في اسم القاضي</mat-error
+                    >
+                  </mat-form-field>
+                </ng-template>
+              </mat-cell>
+            </ng-container>
+
+            <!-- Gender Column -->
+            <ng-container matColumnDef="gender">
+              <mat-header-cell *matHeaderCellDef class="fw-bold"
+                >الصفة</mat-header-cell
+              >
+              <mat-cell *matCellDef="let judge">
+                <ng-container *ngIf="!isEditing(judge); else editGender">
+                  {{ judge.gender }}
+                </ng-container>
+                <ng-template #editGender>
+                  <mat-form-field appearance="outline">
+                    <mat-select [formControl]="editGenderControl" required>
+                      <mat-option value="استاذ">استاذ</mat-option>
+                      <mat-option value="استاذة">استاذة</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="editGenderControl.hasError('required')"
+                      >اسم الصفة مطلوب</mat-error
+                    >
+                  </mat-form-field>
+                </ng-template>
+              </mat-cell>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+              <mat-header-cell *matHeaderCellDef class="text-danger fw-bold"
+                >الإجراءات</mat-header-cell
+              >
+              <mat-cell *matCellDef="let judge">
+                <ng-container *ngIf="!isEditing(judge); else editActions">
+                  <button
+                    mat-icon-button
+                    color="primary"
+                    (click)="editJudge(judge)"
+                    matTooltip="تعديل"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    color="warn"
+                    (click)="deleteJudge(judge.id, judge.fullName)"
+                    matTooltip="حذف"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </ng-container>
+                <ng-template #editActions>
+                  <button
+                    mat-icon-button
+                    color="primary"
+                    (click)="updateJudge()"
+                    matTooltip="حفظ التغييرات"
+                    [disabled]="
+                      editFullNameControl.invalid || editGenderControl.invalid
+                    "
+                  >
+                    <mat-icon>check</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    color="warn"
+                    (click)="cancelEdit()"
+                    matTooltip="إلغاء التعديل"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </ng-template>
+              </mat-cell>
+            </ng-container>
+
+            <mat-header-row
+              *matHeaderRowDef="displayedColumns; sticky: true"
+            ></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+          </mat-table>
+        </ng-template>
+
+        <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+  <div class="mt-4 text-muted">
+    <p><strong>ملاحظات:</strong></p>
+    <ul>
+      <li>
+        يمكنك تعديل بيانات القاضي بالضغط على أيقونة القلم في عمود الإجراءات.
+      </li>
+      <li>لحذف قاض من القائمة، اضغط على أيقونة سلة المهملات.</li>
+      <li>
+        استخدم شريط التنقل أسفل الجدول للتنقل بين الصفحات وتغيير عدد العناصر
+        المعروضة.
+      </li>
+    </ul>
+  </div>
+</div>

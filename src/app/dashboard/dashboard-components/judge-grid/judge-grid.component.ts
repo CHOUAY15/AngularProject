@@ -11,8 +11,6 @@ export interface Judge {
   fullName: string;
   gender: string;
 }
-
-
 @Component({
   selector: 'app-judge-grid',
   templateUrl: './judge-grid.component.html',

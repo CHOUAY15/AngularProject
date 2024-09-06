@@ -5,6 +5,7 @@ import { AddNewOptionDialogComponent } from '../add-new-option-dialog/add-new-op
 import { FileService } from 'src/app/core/service/file.service';
 import { OptionService } from 'src/app/core/service/option.service';
 import { SuccessDialogComponent } from '../success-dialog/success-dialog.component';
+import { FolderRefreshService } from 'src/app/core/service/folder-refresh.service';
 
 @Component({
   selector: 'app-add-folder',
@@ -38,7 +39,8 @@ export class AddFolderComponent implements OnInit {
     public dialogRef: MatDialogRef<AddFolderComponent>,
     private dialog: MatDialog,
     private fileService: FileService,
-    private optionService: OptionService
+    private optionService: OptionService,
+    private folderRefreshService: FolderRefreshService,
   ) {}
 
   ngOnInit() {
@@ -99,7 +101,7 @@ export class AddFolderComponent implements OnInit {
     this.optionService.getAllFeatures().subscribe(
       (data: any[]) => {
         console.log("lalalla",data)
-        this.features = data.map(feature => feature.description); 
+        this.features = data;
         console.log("wewewe",this.features)
       },
       (error) => {
@@ -173,7 +175,7 @@ export class AddFolderComponent implements OnInit {
               name: 'gender',
               label: ' صفة القاضي (استاذ / استاذة)',
               type: 'dropDown',
-              list: ['استاذ ', 'استاذة'],
+              list: [{description:'استاذ '}, {description:'استاذة'}],
               validators: [Validators.required],
             },
           ],
@@ -305,6 +307,7 @@ export class AddFolderComponent implements OnInit {
             break;
           case 'parties':
             this.addParty();
+            console.log('wanassa',result)
             const lastPartyIndex = this.parties.length - 1;
             this.parties.at(lastPartyIndex).patchValue(result);
             break;
@@ -354,11 +357,14 @@ export class AddFolderComponent implements OnInit {
       };
       
       if (formData.parties && formData.parties.length > 0) {
+        console.log('beliinghaaam',formData.parties)
         fileData.parties = formData.parties.map((party: any) => ({
+          
           fullName: party.fullName,
           address: party.address,
           feature: {
-            description: party.feature,
+            id:party.feature.id,
+            description: party.feature.description,
           },
         }));
       }
@@ -372,22 +378,23 @@ export class AddFolderComponent implements OnInit {
       console.log('hbiba dyali ', fileData);
    
 
-      this.fileService.createFile(fileData).subscribe(
-        (response) => {
-        this.dialogRef.close();
-        this.dialog.open(SuccessDialogComponent, {
-          width: '350px',
-          data: {
-             title: 'تمت الإضافة بنجاح',
-              message: `تمت إضافة الملف  بنجاح.`
-          }
-        });
-          console.log('File created successfully:', response);
-        },
-        (error) => {
-          console.error('Error creating file:', error);
-        }
-      );
+      // this.fileService.createFile(fileData).subscribe(
+      //   (response) => {
+      //   this.folderRefreshService.triggerRefresh();
+      //   this.dialogRef.close();
+      //   this.dialog.open(SuccessDialogComponent, {
+      //     width: '350px',
+      //     data: {
+      //        title: 'تمت الإضافة بنجاح',
+      //         message: `تمت إضافة الملف  بنجاح.`
+      //     }
+      //   });
+      //     console.log('File created successfully:', response);
+      //   },
+      //   (error) => {
+      //     console.error('Error creating file:', error);
+      //   }
+      // );
 
     } else {
       console.error('Form is not valid');

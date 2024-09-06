@@ -40,10 +40,10 @@ export class DetailleFolderComponent  implements OnInit{
   }
 
   showParties() {
-    this.route.navigateByUrl(`parties/${this.folder.fileNumber}/allalalal`)
+    this.route.navigateByUrl(`parties/${this.folder.fileNumber}/${this.folder.id}`)
     }
     showLawyers() {
-   this.route.navigateByUrl(`lawyers/${this.folder.fileNumber}/allalalal`)
+   this.route.navigateByUrl(`lawyers/${this.folder.fileNumber}/${this.folder.id}`)
     }
     generateInvitation() {
       const dialogRef = this.dialog.open(InvitOptionDialogComponent, {

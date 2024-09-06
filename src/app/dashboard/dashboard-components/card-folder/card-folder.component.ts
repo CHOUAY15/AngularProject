@@ -5,6 +5,7 @@ import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog/
 import { UpdateFolderComponent } from '../update-folder/update-folder.component';
 import { FileService } from 'src/app/core/service/file.service';
 import { SuccessDialogComponent } from '../success-dialog/success-dialog.component';
+import { FolderRefreshService } from 'src/app/core/service/folder-refresh.service';
 
 @Component({
   selector: 'app-card-folder',
@@ -17,7 +18,8 @@ export class CardFolderComponent {
 
   constructor(
     private dialog: MatDialog,
-    private fileService:FileService
+    private fileService:FileService,
+    private folderRefreshService: FolderRefreshService,
   ) {}
   onUpdate() {
     const dialogRef = this.dialog.open(UpdateFolderComponent, {
@@ -45,7 +47,7 @@ onDelete(id:number) {
       this.fileService.deleteFile(id).subscribe(
         response => {
       
-
+          this.folderRefreshService.triggerRefresh();
           this.dialog.open(SuccessDialogComponent, {
             width: '350px',
             data: {

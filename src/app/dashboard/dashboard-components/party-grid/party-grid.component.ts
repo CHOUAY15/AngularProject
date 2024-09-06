@@ -1,8 +1,19 @@
 // party-grid.component.ts
 import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
+import { PartyService } from 'src/app/core/service/party.service';
+import { SuccessDialogComponent } from '../success-dialog/success-dialog.component';
+import { DeleteConfirmationDialogComponent } from '../card-folder/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { FeatureService } from 'src/app/core/service/feature.service';
 
 interface Feature {
   id: number;
@@ -12,84 +23,191 @@ interface Feature {
 interface Party {
   id: number;
   fullName: string;
-  adresse: string;
+  address: string;
   feature: Feature;
 }
 
 @Component({
   selector: 'app-party-grid',
   templateUrl: './party-grid.component.html',
-  styleUrls: ['./party-grid.component.scss']
+  styleUrls: ['./party-grid.component.scss'],
 })
 export class PartyGridComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'fullName', 'adresse', 'feature', 'actions'];
+  displayedColumns: string[] = [
+    'id',
+    'fullName',
+    'adresse',
+    'feature',
+    'actions',
+  ];
   dataSource: MatTableDataSource<Party>;
-  newParty: Party = { id: 0, fullName: '', adresse: '', feature: { id: 0, description: '' } };
   editingParty: Party | null = null;
   fileNum: any;
+  fileId: any;
+  partyForm: FormGroup;
+  editFullNameControl: FormControl;
+  editAdresseControl: FormControl;
+  editFeatureControl: FormControl;
 
-  features: Feature[] = [
-    { id: 1, description: 'مدعي' },
-    { id: 2, description: 'مدعى عليه' },
-    { id: 3, description: 'شاهد' },
-    // Add more features as needed
-  ];
+  features: Feature[] = [];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private route: ActivatedRoute) {
-    const initialData = [
-      { id: 1, adresse: 'شارع الميلحة الجديدة', fullName: 'زكرياء الحرشي', feature: { id: 1, description: 'مدعي' } },
-      // Add more mock data here
-    ];
-    this.dataSource = new MatTableDataSource(initialData);
+  constructor(
+    private route: ActivatedRoute,
+    private partyService: PartyService,
+    private fb: FormBuilder,
+    private dialog: MatDialog,
+    private featureService: FeatureService,
+  ) {
+    this.dataSource = new MatTableDataSource<Party>([]);
+    this.partyForm = this.fb.group({
+      fullName: ['', [Validators.required, Validators.pattern(/^[^0-9]*$/)]],
+      adresse: ['', [Validators.required]],
+      feature: ['', [Validators.required]],
+    });
+    this.editFullNameControl = new FormControl('', [
+      Validators.required,
+      Validators.pattern(/^[^0-9]*$/),
+    ]);
+    this.editAdresseControl = new FormControl('', [Validators.required]);
+    this.editFeatureControl = new FormControl('', [Validators.required]);
   }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params) => {
       this.fileNum = params.get('fileNum');
+      this.fileId = params.get('id');
     });
+    this.loadParties(this.fileId);
+    this.loadFeatures();
   }
 
+  loadParties(fileId: number) {
+    this.partyService.getAllPartiesByFile(fileId).subscribe(
+      (data) => (this.dataSource.data = data),
+      (error) => console.error('Error fetching parties', error)
+    );
+  }
+  loadFeatures() {
+    this.featureService.getAllFeatures().subscribe(
+      data => this.features = data,
+      error => console.error('Error fetching features', error)
+    );
+  }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.paginator._intl.itemsPerPageLabel = 'العناصر في الصفحة:';
     this.paginator._intl.nextPageLabel = 'الصفحة التالية';
     this.paginator._intl.previousPageLabel = 'الصفحة السابقة';
-    this.paginator._intl.getRangeLabel = (page: number, pageSize: number, length: number) => {
+    this.paginator._intl.getRangeLabel = (
+      page: number,
+      pageSize: number,
+      length: number
+    ) => {
       if (length === 0 || pageSize === 0) {
         return `0 من ${length}`;
       }
       length = Math.max(length, 0);
       const startIndex = page * pageSize;
-      const endIndex = startIndex < length ? Math.min(startIndex + pageSize, length) : startIndex + pageSize;
+      const endIndex =
+        startIndex < length
+          ? Math.min(startIndex + pageSize, length)
+          : startIndex + pageSize;
       return `${startIndex + 1} - ${endIndex} من ${length}`;
     };
   }
 
   addParty() {
-    this.newParty.id = Math.max(0, ...this.dataSource.data.map(p => p.id)) + 1;
-    this.dataSource.data = [...this.dataSource.data, { ...this.newParty }];
-    this.newParty = { id: 0, fullName: '', adresse: '', feature: { id: 0, description: '' } };
+    if (this.partyForm.valid) {
+      const newParty: Party = {
+        id: 0,
+        fullName: this.partyForm.get('fullName')?.value,
+        address: this.partyForm.get('adresse')?.value,
+        feature: this.partyForm.get('feature')?.value,
+      };
+
+      console.log('hbibibibib', newParty);
+      this.partyService.addPartyToFile(newParty, this.fileId).subscribe(
+        (createdParty) => {
+          this.dataSource.data = [...this.dataSource.data, createdParty];
+          this.partyForm.reset();
+
+          this.dialog.open(SuccessDialogComponent, {
+            width: '350px',
+            data: {
+              title: 'تمت الإضافة بنجاح',
+              message: `تمت إضافة الطرف ${createdParty.fullName} بنجاح.`,
+            },
+          });
+        },
+        (error) => console.error('Error creating party', error)
+      );
+    }
   }
 
   editParty(party: Party) {
     this.editingParty = { ...party };
+    this.editFullNameControl.setValue(party.fullName);
+    this.editAdresseControl.setValue(party.address);
+    this.editFeatureControl.setValue(party.feature);
   }
 
   updateParty() {
-    if (this.editingParty) {
-      const index = this.dataSource.data.findIndex(p => p.id === this.editingParty!.id);
-      if (index !== -1) {
-        this.dataSource.data[index] = { ...this.editingParty };
-        this.dataSource.data = [...this.dataSource.data];
-      }
-      this.editingParty = null;
+    if (
+      this.editingParty &&
+      this.editFullNameControl.valid &&
+      this.editAdresseControl.valid &&
+      this.editFeatureControl.valid
+    ) {
+      const updatedParty: Party = {
+        ...this.editingParty,
+        fullName: this.editFullNameControl.value,
+        address: this.editAdresseControl.value,
+        feature: this.editFeatureControl.value,
+      };
+      this.partyService.updateParty(updatedParty.id, updatedParty).subscribe(
+        (updatedParty) => {
+          const index = this.dataSource.data.findIndex(
+            (c) => c.id === updatedParty.id
+          );
+          if (index !== -1) {
+            this.dataSource.data[index] = updatedParty;
+            this.dataSource.data = [...this.dataSource.data];
+          }
+          this.editingParty = null;
+        },
+        (error) => console.error('Error updating party', error)
+      );
     }
   }
 
-  deleteParty(id: number) {
-    this.dataSource.data = this.dataSource.data.filter(party => party.id !== id);
+  deleteParty(id: number, name: string) {
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
+      width: '350px',
+      data: { dataProp: name, dataTitle: 'الطرف' },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.partyService.deletePartyFromFile(this.fileId, id).subscribe(
+          (response) => {
+            this.dataSource.data = this.dataSource.data.filter(
+              (party) => party.id !== id
+            );
+
+            this.dialog.open(SuccessDialogComponent, {
+              width: '350px',
+              data: {
+                title: 'تمت الازالة بنجاح',
+                message: `تمت ازالة الطرف ${name} بنجاح.`,
+              },
+            });
+          },
+          (error) => console.error('Error deleting party', error)
+        );
+      }
+    });
   }
 
   cancelEdit() {

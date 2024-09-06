@@ -14,6 +14,7 @@ interface Parties {
   adresse:string;
 }
 interface PropertyReference {}
+
 export interface Lawyer {
   id:number;
   authority:string;
