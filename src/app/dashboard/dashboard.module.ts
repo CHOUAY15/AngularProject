@@ -34,6 +34,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { PartyGridComponent } from './dashboard-components/party-grid/party-grid.component';
 import { UpdateFolderComponent } from './dashboard-components/update-folder/update-folder.component';
 import { InvitOptionDialogComponent } from './dashboard-components/detaille-folder/invit-option-dialog/invit-option-dialog.component';
+import { SuccessDialogComponent } from './dashboard-components/success-dialog/success-dialog.component';
 
 
 
@@ -55,7 +56,8 @@ import { InvitOptionDialogComponent } from './dashboard-components/detaille-fold
     TopicGridComponent,
     PartyGridComponent,
     UpdateFolderComponent,
-    InvitOptionDialogComponent
+    InvitOptionDialogComponent,
+    SuccessDialogComponent
 
   ],
   imports: [
@@ -96,7 +98,8 @@ import { InvitOptionDialogComponent } from './dashboard-components/detaille-fold
     TopicGridComponent,
     PartyGridComponent,
     UpdateFolderComponent,
-    InvitOptionDialogComponent
+    InvitOptionDialogComponent,
+    SuccessDialogComponent
 
   ]
 })

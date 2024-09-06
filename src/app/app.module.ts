@@ -14,7 +14,6 @@ import localeAr from '@angular/common/locales/ar';
 
 // Modules
 import { DashboardModule } from './dashboard/dashboard.module';
-import { ComponentsModule } from './components/components.module';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
@@ -29,7 +28,6 @@ import { HttpClientModule } from '@angular/common/http';
     FeatherModule.pick(allIcons),
     DemoFlexyModule,
     DashboardModule,
-    ComponentsModule,
     FormsModule,
     HttpClientModule
   ],

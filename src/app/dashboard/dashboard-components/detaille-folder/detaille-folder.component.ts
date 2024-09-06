@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { Folder } from 'src/app/shared/models/folder';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DeleteConfirmationDialogComponent } from '../card-folder/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { InvitOptionDialogComponent } from './invit-option-dialog/invit-option-dialog.component';
+import { FileService } from 'src/app/core/service/file.service';
 
 @Component({
   selector: 'app-detaille-folder',
@@ -14,31 +14,28 @@ export class DetailleFolderComponent  implements OnInit{
 
 
 
-  folder!: Folder;
+  folder!: any;
+  foderID:any;
 
-  constructor(private route:Router, private dialog: MatDialog){
+  constructor(private route:Router, private dialog: MatDialog,private router:ActivatedRoute,private fileService:FileService){
 
   }
 
   ngOnInit(): void {
-    this.folder = new Folder(
-      "12123", // رقم الملف
-      { city: "الرباط",name:"" }, // المحكمة
-     // الموضوع
-      { gender: "أنثى",fullName:"" }, // القاضي
-      { description: "مدني" }, // نوع الإجراء
-      { fullName: "فاطمة الزهراء بن سعيد", adresse: "حي التقدم، الرباط" }, // الأطراف
-      "الحكم الأولي صدر", // الحكم الأولي
-      2000, // الرسوم
-      new Date("2024-11-15"), // تاريخ الخبرة
-      {}, // مرجع الملكية
-      true, // تقرير الخبير تم تقديمه
-      false, // ورقة المصاريف تم تقديمها
-      "0987654321", // رقم الحساب
-      false, // الرسوم تم تحصيلها
-      {id:1, authority: "محامي", fullName: "يوسف العلوي" }, // المحامي
-      { title: "الجلسة الثانية" },
-      { description: "قضية تجارية" }, // الوقت
+    this.router.paramMap.subscribe(params => {
+      this.foderID = params.get('id');
+   });
+   this.getFolderDetails(this.foderID);
+  }
+
+  getFolderDetails(id: number): void {
+    this.fileService.getFileById(id).subscribe(
+      (data) => {
+        this.folder = data;
+      },
+      (error) => {
+        console.error('Error fetching folder details:', error);
+      }
     );
   }
 

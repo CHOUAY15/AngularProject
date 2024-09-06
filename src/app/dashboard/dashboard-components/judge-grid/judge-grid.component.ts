@@ -1,12 +1,17 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-
+import { JudgeService } from 'src/app/core/service/judge.service'; 
+import { DeleteConfirmationDialogComponent } from '../card-folder/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { SuccessDialogComponent } from '../success-dialog/success-dialog.component';
 export interface Judge {
   id: number;
   fullName: string;
   gender: string;
 }
+
 
 @Component({
   selector: 'app-judge-grid',
@@ -16,20 +21,27 @@ export interface Judge {
 export class JudgeGridComponent implements OnInit {
   displayedColumns: string[] = ['id', 'fullName', 'gender', 'actions'];
   dataSource: MatTableDataSource<Judge>;
-  newJudge: Judge = { id: 0, fullName: '', gender: '' };
   editingJudge: Judge | null = null;
+  judgeForm:FormGroup;
+  editFullNameControl:FormControl;
+  editGenderControl:FormControl;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor() {
-    const initialData: Judge[] = [
-      { id: 1, fullName: 'وليد شواي', gender: 'استاذ' },
-      { id: 2, fullName: 'فاطمة فرنون', gender: 'استاذة' }
-    ];
-    this.dataSource = new MatTableDataSource(initialData);
+  constructor(private judgeService: JudgeService,    private fb: FormBuilder,  private dialog: MatDialog) {  // Inject the service
+    this.dataSource = new MatTableDataSource<Judge>([]);
+    this.judgeForm=this.fb.group({
+      fullName: ['', [Validators.required, Validators.pattern(/^[^0-9]*$/)]],
+      gender:['', [Validators.required]]
+
+    });
+    this.editFullNameControl=new FormControl('', [Validators.required, Validators.pattern(/^[^0-9]*$/)]);
+    this.editGenderControl=new FormControl('', [Validators.required]);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadJudges();
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -47,29 +59,98 @@ export class JudgeGridComponent implements OnInit {
     };
   }
 
+  // Load judges from the API
+  loadJudges() {
+    this.judgeService.getAllJudges().subscribe(
+      data => this.dataSource.data = data,
+      error => console.error('Error fetching judges', error)
+    );
+  }
+
   addJudge() {
-    this.newJudge.id = Math.max(0, ...this.dataSource.data.map(j => j.id)) + 1;
-    this.dataSource.data = [...this.dataSource.data, { ...this.newJudge }];
-    this.newJudge = { id: 0, fullName: '', gender: '' };
+
+    if (this.judgeForm.valid) {
+      const newJudge: Judge = {
+        id: 0,
+        fullName: this.judgeForm.get('fullName')?.value,
+        gender:this.judgeForm.get('gender')?.value,
+      };
+      this.judgeService.createJudge(newJudge).subscribe(
+        createdJudge => {
+          this.dataSource.data = [...this.dataSource.data, createdJudge];
+          this.judgeForm.reset();
+
+          this.dialog.open(SuccessDialogComponent, {
+            width: '350px',
+            data: {
+              title: 'تمت الإضافة بنجاح',
+              message: `تمت إضافة القاضي ${createdJudge.fullName} بنجاح.`
+            }
+          });
+        },
+        error => console.error('Error creating judge', error)
+      );
+    }
+
+    
   }
 
   editJudge(judge: Judge) {
     this.editingJudge = { ...judge };
+    this.editFullNameControl.setValue(judge.fullName);
+    this.editGenderControl.setValue(judge.gender);
   }
 
   updateJudge() {
-    if (this.editingJudge) {
-      const index = this.dataSource.data.findIndex(j => j.id === this.editingJudge!.id);
-      if (index !== -1) {
-        this.dataSource.data[index] = { ...this.editingJudge };
-        this.dataSource.data = [...this.dataSource.data];
-      }
-      this.editingJudge = null;
+    if (this.editingJudge && this.editFullNameControl.valid && this.editGenderControl.valid) {
+      const updatedJudge: Judge = {
+        ...this.editingJudge,
+        fullName: this.editFullNameControl.value,
+        gender: this.editGenderControl.value
+      };
+      this.judgeService.updateJudge(updatedJudge.id, updatedJudge).subscribe(
+        updatedJudge => {
+          const index = this.dataSource.data.findIndex(c => c.id === updatedJudge.id);
+          if (index !== -1) {
+            this.dataSource.data[index] = updatedJudge;
+            this.dataSource.data = [...this.dataSource.data];
+          }
+          this.editingJudge = null;
+        },
+        error => console.error('Error updating judge', error)
+      );
     }
   }
 
-  deleteJudge(id: number) {
-    this.dataSource.data = this.dataSource.data.filter(judge => judge.id !== id);
+  deleteJudge(id: number,name:string) {
+    
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
+      width: '350px',
+      data: { dataProp: name,dataTitle:"القاضي" }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+   
+        this.judgeService.deleteJudge(id).subscribe(
+          response => {
+            this.dataSource.data = this.dataSource.data.filter(judge => judge.id !== id);
+
+            this.dialog.open(SuccessDialogComponent, {
+              width: '350px',
+              data: {
+                title: 'تمت الازالة بنجاح',
+                message: `تمت ازالة القاضي ${name} بنجاح.`
+              }
+            });
+          },
+          error => console.error('Error deleting judge', error)
+        );
+       
+      }
+    });
+
+    
   }
 
   cancelEdit() {

@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { Folder } from 'src/app/shared/models/folder';
 import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { UpdateFolderComponent } from '../update-folder/update-folder.component';
+import { FileService } from 'src/app/core/service/file.service';
+import { SuccessDialogComponent } from '../success-dialog/success-dialog.component';
 
 @Component({
   selector: 'app-card-folder',
@@ -12,16 +13,16 @@ import { UpdateFolderComponent } from '../update-folder/update-folder.component'
 })
 export class CardFolderComponent {
 
-  @Input() folder!:Folder;
+  @Input() folder!:any;
 
   constructor(
-    private route: ActivatedRoute,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private fileService:FileService
   ) {}
   onUpdate() {
     const dialogRef = this.dialog.open(UpdateFolderComponent, {
       width: '600px',
-      data: { folder: { ...this.folder } } // Pass a copy of the folder to avoid direct mutations
+      data: { folder: { ...this.folder } } 
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -33,22 +34,33 @@ export class CardFolderComponent {
       }
     });
   }
-onDelete() {
+onDelete(id:number) {
   const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
     width: '350px',
-    data: { folderNumber: this.folder.fileNumber }
+    data: { dataProp: this.folder.fileNumber,dataTitle:"الملف" }
   });
 
   dialogRef.afterClosed().subscribe(result => {
     if (result) {
-      // User confirmed deletion
-      console.log('Deleting folder:', this.folder.fileNumber);
-      // Implement your delete logic here
+      this.fileService.deleteFile(id).subscribe(
+        response => {
+      
+
+          this.dialog.open(SuccessDialogComponent, {
+            width: '350px',
+            data: {
+              title: 'تمت الازالة بنجاح',
+              message: `تمت ازالة الملف  بنجاح.`
+            }
+          });
+  
+  
+        },
+        error => console.error('Error deleting file', error)
+      );
     }
   });
 }
-onView() {
-throw new Error('Method not implemented.');
-}
+
 
 }

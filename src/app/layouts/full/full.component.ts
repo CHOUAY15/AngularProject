@@ -36,28 +36,28 @@ export class FullComponent {
     },
 
     {
-      link: "/alerts",
+      link: "/judges",
       icon: "judge",
       menu: "لائحة القضاة",
     },
     {
-      link: "/forms",
+      link: "/features",
       icon: "feature",
       menu: "صفة الاطراف",
     },
 
     {
-      link: "/grid-list",
+      link: "/courts",
       icon: "court",
       menu: "لائحة المحاكم",
     },
     {
-      link: "/menu",
+      link: "/actions",
       icon: "list",
       menu: "لائحة الإجراءات",
     },
     {
-      link: "/table",
+      link: "/topics",
       icon: "topic",
       menu: "لائحة المواضيع",
     },

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -19,6 +19,10 @@ export class FileService {
       );
   }
 
+  getFileById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  }
+
   findAll(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/all`)
       .pipe(
@@ -27,7 +31,7 @@ export class FileService {
 
   }
   deleteFile(fileId: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/delete/${fileId}`)
+    return this.http.delete(`${this.apiUrl}/delete/${fileId}`, { responseType: 'text' })
       .pipe(
         catchError(this.handleError)
       );

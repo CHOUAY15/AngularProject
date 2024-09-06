@@ -4,6 +4,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AddNewOptionDialogComponent } from '../add-new-option-dialog/add-new-option-dialog.component';
 import { FileService } from 'src/app/core/service/file.service';
 import { OptionService } from 'src/app/core/service/option.service';
+import { SuccessDialogComponent } from '../success-dialog/success-dialog.component';
 
 @Component({
   selector: 'app-add-folder',
@@ -14,23 +15,6 @@ export class AddFolderComponent implements OnInit {
   fileForm!: FormGroup;
   currentStep = 0;
   totalSteps = 3;
-
-  courts: any[]=[{
-    city: "الدار البيضاء",
-    name: "محكمة الدرجة الأولى"
-  }
-  ] ; // Replace with actual court options
-  judges: any[]=[{
- 
-    gender: "استاذ",
-    fullName: "أحمد بن عبد الله"
-  }
-  ] ; // Replace with actual judge options
-  procedureTypes: any[]=[{
-  
-  description: "استئناف"
-  }
-  ] ;// Replace with actual procedure types
   hours: any[] = [
     '09:00 صباحا',
     '10:00 صباحا',
@@ -41,11 +25,13 @@ export class AddFolderComponent implements OnInit {
     '15:00 زوالا',
     '16:00 زوالا',
     '17:00 زوالا',
-  ]; // Add more hours as needed
-  topics: any[]=[{
- 
-    description: "قانون الأسرة"
-  }]; // Replace with actual topics
+  ];
+
+  courts: any[] = [];
+  judges: any[] = [];
+  procedureTypes: any[] = [];
+  features: any[] = [];
+  topics: any[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -74,6 +60,53 @@ export class AddFolderComponent implements OnInit {
       time: ['', Validators.required],
       topic: ['', Validators.required],
     });
+    this.loadInitialData();
+  }
+
+  loadInitialData() {
+    this.optionService.getAllCourts().subscribe(
+      (data: any[]) => {
+        this.courts = data;
+      },
+      (error) => {
+        console.error('Error loading courts:', error);
+      }
+    );
+    this.optionService.getAllJudges().subscribe(
+      (data: any[]) => {
+        this.judges = data;
+      },
+      (error) => {
+        console.error('Error loading judges:', error);
+      }
+    );
+    this.optionService.getAllTopics().subscribe(
+      (data: any[]) => {
+        this.topics = data;
+      },
+      (error) => {
+        console.error('Error loading topics:', error);
+      }
+    );
+    this.optionService.getAllActions().subscribe(
+      (data: any[]) => {
+        this.procedureTypes = data;
+      },
+      (error) => {
+        console.error('Error loading actions:', error);
+      }
+    );
+    this.optionService.getAllFeatures().subscribe(
+      (data: any[]) => {
+        console.log("lalalla",data)
+        this.features = data.map(feature => feature.description); 
+        console.log("wewewe",this.features)
+      },
+      (error) => {
+        console.error('Error loading features:', error);
+      }
+    );
+
   }
 
   get parties() {
@@ -88,7 +121,7 @@ export class AddFolderComponent implements OnInit {
     const partyGroup = this.fb.group({
       fullName: ['', Validators.required],
       address: ['', Validators.required],
-      feature: ['', Validators.required]
+      feature: ['', Validators.required],
     });
     this.parties.push(partyGroup);
   }
@@ -99,7 +132,7 @@ export class AddFolderComponent implements OnInit {
   addLawyer() {
     const lawyerGroup = this.fb.group({
       fullName: ['', Validators.required],
-      authority: ['', Validators.required]
+      authority: ['', Validators.required],
     });
     this.lawyers.push(lawyerGroup);
   }
@@ -154,8 +187,6 @@ export class AddFolderComponent implements OnInit {
               name: 'description',
               label: 'وصف الإجراء ',
               validators: [Validators.required],
-              type: 'dropDown',
-              list: ['تنازل ', 'تنفيذ'],
             },
           ],
         };
@@ -168,8 +199,7 @@ export class AddFolderComponent implements OnInit {
               name: 'description',
               label: 'وصف الموضوع  ',
               validators: [Validators.required],
-              type: 'dropDown',
-              list: ['نصب واحتيال'],
+              
             },
           ],
         };
@@ -193,7 +223,7 @@ export class AddFolderComponent implements OnInit {
               label: 'صفة الطرف',
               validators: [Validators.required],
               type: 'dropDown',
-              list: ['مدعي', 'مستأنف'],
+              list: this.features,
             },
           ],
         };
@@ -229,10 +259,10 @@ export class AddFolderComponent implements OnInit {
       if (result) {
         switch (field) {
           case 'court':
-            console.log('mimi',result)
+            console.log('mimi', result);
             this.optionService.addCourt(result).subscribe(
               (response: any) => {
-                this.courts.push(response); 
+                this.courts.push(response);
                 this.fileForm.get('court')?.setValue(response);
               },
               (error: any) => {
@@ -273,16 +303,16 @@ export class AddFolderComponent implements OnInit {
               }
             );
             break;
-            case 'parties':
-              this.addParty();
-              const lastPartyIndex = this.parties.length - 1;
-              this.parties.at(lastPartyIndex).patchValue(result);
-              break;
-            case 'lawyer':
-              this.addLawyer();
-              const lastLawyerIndex = this.lawyers.length - 1;
-              this.lawyers.at(lastLawyerIndex).patchValue(result);
-              break;
+          case 'parties':
+            this.addParty();
+            const lastPartyIndex = this.parties.length - 1;
+            this.parties.at(lastPartyIndex).patchValue(result);
+            break;
+          case 'lawyer':
+            this.addLawyer();
+            const lastLawyerIndex = this.lawyers.length - 1;
+            this.lawyers.at(lastLawyerIndex).patchValue(result);
+            break;
         }
       }
     });
@@ -292,7 +322,7 @@ export class AddFolderComponent implements OnInit {
     if (this.fileForm.valid) {
       const formData = this.fileForm.value;
 
-      const fileData = {
+      const fileData: any = {
         fileNumber: formData.fileNumber,
         judgment: formData.preliminaryJudgment,
         fees: formData.fees,
@@ -304,43 +334,61 @@ export class AddFolderComponent implements OnInit {
         feeCollection: formData.feesCollected,
         hour: formData.time,
         topic: {
+          id:formData.topic.id,
           description: formData.topic.description,
         },
         actionType: {
+          id:formData.procedureType.id,
           description: formData.procedureType.description,
         },
         court: {
-          city: formData.court.city, 
+          id:formData.court.id,
+          city: formData.court.city,
           name: formData.court.name,
         },
         judge: {
-          gender: formData.judge.gender, 
+          id:formData.judge.id,
+          gender: formData.judge.gender,
           fullName: formData.judge.fullName,
         },
-        parties: formData.parties.map((party: any) => ({
+      };
+      
+      if (formData.parties && formData.parties.length > 0) {
+        fileData.parties = formData.parties.map((party: any) => ({
           fullName: party.fullName,
           address: party.address,
           feature: {
             description: party.feature,
           },
-        })),
-        lawyers: formData.lawyers.map((lawyer: any) => ({
+        }));
+      }
+      
+      if (formData.lawyers && formData.lawyers.length > 0) {
+        fileData.lawyers = formData.lawyers.map((lawyer: any) => ({
           fullName: lawyer.fullName,
           authority: lawyer.authority,
-        })),
-      };
+        }));
+      }
       console.log('hbiba dyali ', fileData);
-      console.log('zin dyali ', formData.parties);
-      console.log('zin dyali2 ', formData.lawyers);
+   
 
       this.fileService.createFile(fileData).subscribe(
         (response) => {
+        this.dialogRef.close();
+        this.dialog.open(SuccessDialogComponent, {
+          width: '350px',
+          data: {
+             title: 'تمت الإضافة بنجاح',
+              message: `تمت إضافة الملف  بنجاح.`
+          }
+        });
           console.log('File created successfully:', response);
         },
         (error) => {
           console.error('Error creating file:', error);
         }
       );
+
     } else {
       console.error('Form is not valid');
     }

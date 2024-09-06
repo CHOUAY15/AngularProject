@@ -13,14 +13,33 @@ private apiUrl = 'http://localhost:8081/api';
     return this.http.post(`${this.apiUrl}/court/create`, court); 
   }
 
+  getAllCourts(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/court/all`);
+  }
+
   addJudge(judge: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/judge/create`, judge); 
   }
+  getAllJudges(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/judge/all`);
+  }
+
   addTopic(topic: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/topic/create`, topic); 
   }
+  getAllTopics(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/topic/all`);
+  }
   addAction(action: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/action-type/create`, action); 
+  }
+
+  getAllActions(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/action-type/all`);
+  }
+
+  getAllFeatures(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/feature/all`);
   }
 
 }

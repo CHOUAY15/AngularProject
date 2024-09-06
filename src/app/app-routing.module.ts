@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ButtonsComponent } from './components/buttons/buttons.component';
 
-import { FormsComponent } from './components/forms/forms.component';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { FullComponent } from './layouts/full/full.component';
@@ -22,12 +20,12 @@ const routes: Routes = [
     children: [
       {path:"", redirectTo:"/home", pathMatch:"full"},
       {path:"home", component:DashboardComponent},
-      {path:"forms", component:FeatureGridComponent},
+      {path:"features", component:FeatureGridComponent},
       {path:"detaille-folder/:id",component:DetailleFolderComponent},
-      {path:"grid-list",component:CourtGridComponent},
-      {path:"alerts",component:JudgeGridComponent},
-      {path:"menu",component:ProcedureGridComponent},
-      {path:"table",component:TopicGridComponent},
+      {path:"courts",component:CourtGridComponent},
+      {path:"judges",component:JudgeGridComponent},
+      {path:"actions",component:ProcedureGridComponent},
+      {path:"topics",component:TopicGridComponent},
       {path:"lawyers/:fileNum/:id",component:LawyerGridComponent},
       {path:"parties/:fileNum/:id",component:PartyGridComponent}
 

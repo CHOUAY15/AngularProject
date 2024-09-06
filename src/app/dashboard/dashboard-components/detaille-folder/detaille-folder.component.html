@@ -1,12 +1,15 @@
 <div class="container mt-5" dir="rtl">
   <div class="alert alert-info mb-4">
-    <h5 class="text-primary"><i class="bi bi-info-circle"></i> دليل المستخدم</h5>
+    <h5 class="text-primary">
+      <i class="bi bi-info-circle"></i> دليل المستخدم
+    </h5>
     <ul>
       <li>انقر على "الأطراف" أو "المحامون" لعرض التفاصيل الكاملة.</li>
       <li>استخدم زر "تعديل" لتحديث معلومات الملف.</li>
       <li>يمكنك إزالة الملف باستخدام زر "ازالة"، ولكن يرجى توخي الحذر.</li>
       <li>لإنشاء دعوة، انقر على زر "استخراج دعوة".</li>
-    </ul>  </div>
+    </ul>
+  </div>
   <div class="card shadow-lg">
     <div class="card-header bg-primary text-white">
       <h2 class="mb-0 text-center">معلومات الملف</h2>
@@ -15,51 +18,93 @@
       <div class="row">
         <div class="col-md-6">
           <h4 class="text-primary mb-4">معلومات أساسية</h4>
-          <p><strong>رقم الملف:</strong> <span class="badge bg-info">{{ folder.fileNumber }}</span></p>
-          <p><strong>المحكمة:</strong> {{ folder.court.city }}</p>
+          <p>
+            <strong>رقم الملف:</strong>
+            <span class="badge bg-info">{{ folder.fileNumber }}</span>
+          </p>
+          <p>
+            <strong>المحكمة:</strong> {{ folder.court.name }}
+            {{ folder.court.city }}
+          </p>
           <p><strong>الموضوع:</strong> {{ folder.topic.description }}</p>
-          <p><strong>القاضي:</strong> {{ folder.judge.gender }}</p>
-          <p><strong>نوع الإجراء:</strong> {{ folder.procedureType.description }}</p>
+          <p>
+            <strong>القاضي:</strong> {{ folder.judge.gender }}
+            {{ folder.judge.fullName }}
+          </p>
+          <p>
+            <strong>نوع الإجراء:</strong> {{ folder.actionType.description }}
+          </p>
         </div>
         <div class="col-md-6">
           <h4 class="text-primary mb-4">معلومات الأطراف والمحامون</h4>
           <p>
-            <strong>الأطراف:</strong> 
-            <a (click)="showParties()" class="btn btn-link text-success">اضغط هنا</a>
+            <strong>الأطراف:</strong>
+            <a (click)="showParties()" class="btn btn-link text-success"
+              >اضغط هنا</a
+            >
           </p>
           <p>
-            <strong>المحامون:</strong> 
-            <a (click)="showLawyers()" class="btn btn-link text-info">اضغط هنا</a>
+            <strong>المحامون:</strong>
+            <a (click)="showLawyers()" class="btn btn-link text-info"
+              >اضغط هنا</a
+            >
           </p>
         </div>
       </div>
-      <hr>
+      <hr />
       <div class="row mt-4">
         <div class="col-md-6">
           <h4 class="text-primary mb-4">معلومات مالية</h4>
-          <p><strong>الرسوم:</strong> <span class="text-success">{{ folder.fees | currency:'MAD':'symbol' }}</span></p>
+          <p>
+            <strong> الأتعاب:</strong>
+            <span class="text-success">{{
+              folder.fees | currency : "درهم" : "symbol"
+            }}</span>
+          </p>
           <p><strong>رقم الحساب:</strong> {{ folder.accountNumber }}</p>
           <p>
-            <strong>الرسوم المحصلة:</strong>
-            <span [ngClass]="{'text-success': folder.feesCollected, 'text-danger': !folder.feesCollected}">
-              {{ folder.feesCollected ? 'تم تحصيلها' : 'لم يتم تحصيلها' }}
+            <strong> الأتعاب المحصلة:</strong>
+            <span
+              [ngClass]="{
+                'text-success': folder.feeCollection,
+                'text-danger': !folder.feeCollection
+              }"
+            >
+              {{ folder.feeCollection ? "تم تحصيلها" : "لم يتم تحصيلها" }}
             </span>
           </p>
         </div>
         <div class="col-md-6">
           <h4 class="text-primary mb-4">معلومات إضافية</h4>
-          <p><strong>الحكم الأولي:</strong> {{ folder.preliminaryJudgment }}</p>
-          <p><strong>تاريخ الخبرة:</strong> {{ folder.expertiseDate | date:'longDate':'':'ar'}}</p>
+          <p><strong> حكم تمهيدي:</strong> {{ folder.judgment }}</p>
+          <p><strong>  المرجع العقاري:</strong> {{ folder.reference }}</p>
+
           <p>
-            <strong>تقرير الخبير:</strong>
-            <span [ngClass]="{'text-success': folder.expertReportSubmitted, 'text-warning': !folder.expertReportSubmitted}">
-              {{ folder.expertReportSubmitted ? 'تم تقديمه' : 'لم يتم تقديمه' }}
+            <strong>تاريخ الخبرة:</strong>
+            {{ folder.experienceDate | date : "longDate" : "" : "ar" }}
+          </p>
+          <p>
+            <strong>تقرير الخبرة:</strong>
+            <span
+              [ngClass]="{
+                'text-success': folder.depositExpertReport,
+                'text-warning': !folder.depositExpertReport
+              }"
+            >
+              {{ folder.depositExpertReport ? "تم تقديمه" : "لم يتم تقديمه" }}
             </span>
           </p>
           <p>
-            <strong>ورقة المصاريف:</strong>
-            <span [ngClass]="{'text-success': folder.expenseSheetSubmitted, 'text-warning': !folder.expenseSheetSubmitted}">
-              {{ folder.expenseSheetSubmitted ? 'تم تقديمها' : 'لم يتم تقديمها' }}
+            <strong>ورقة المصروف:</strong>
+            <span
+              [ngClass]="{
+                'text-success': folder.depositExpenseSheet,
+                'text-warning': !folder.depositExpenseSheet
+              }"
+            >
+              {{
+                folder.depositExpenseSheet ? "تم تقديمها" : "لم يتم تقديمها"
+              }}
             </span>
           </p>
         </div>
@@ -70,7 +115,7 @@
         <a class="btn btn-danger" (click)="onDelete()">
           <i class="bi bi-trash"></i> ازالة
         </a>
-     
+
         <a class="btn btn-success text-white" (click)="generateInvitation()">
           <i class="bi bi-file-earmark-text"></i> استخراج دعوة
         </a>
@@ -80,6 +125,4 @@
       </div>
     </div>
   </div>
-  
-
 </div>

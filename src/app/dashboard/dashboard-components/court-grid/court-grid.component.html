@@ -1,39 +1,52 @@
 <div class="container mt-4" dir="rtl">
-    <h2 class="mb-4 text-black">جدول بيانات المحاكم</h2>
-  
-    <div class="card mb-4">
-      <div class="card-header bg-primary text-white">
-        <h5 class="mb-0">إضافة محكمة جديدة</h5>
-      </div>
-      <div class="card-body">
-        <form (ngSubmit)="addCourt()" class="mb-0">
-          <div class="row g-3">
-            <div class="col-md-5">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>اسم المحكمة</mat-label>
-                <input matInput [(ngModel)]="newCourt.name" name="name" required>
-              </mat-form-field>
-            </div>
-            <div class="col-md-5">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>المدينة</mat-label>
-                <input matInput [(ngModel)]="newCourt.city" name="city" required>
-              </mat-form-field>
-            </div>
-            <div class="col-md-2">
-              <button mat-raised-button type="submit" class="w-100 bg-primary text-white">إضافة محكمة</button>
-            </div>
-          </div>
-        </form>
-      </div>
+  <h2 class="mb-4 text-black">جدول بيانات المحاكم</h2>
+
+  <div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">إضافة محكمة جديدة</h5>
     </div>
-  
-    <div class="card">
-      <div class="card-header bg-primary text-white">
-        <h5 class="mb-0">قائمة المحاكم</h5>
-      </div>
-      <div class="card-body p-0">
-        <div class="mat-elevation-z8 table-container">
+    <div class="card-body">
+      <form [formGroup]="courtForm" (ngSubmit)="addCourt()" class="mb-0">
+        <div class="row g-3">
+          <div class="col-md-5">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>اسم المحكمة</mat-label>
+              <input matInput formControlName="name" required>
+              <mat-error *ngIf="courtForm.get('name')?.hasError('required')">اسم المحكمة مطلوب</mat-error>
+              <mat-error *ngIf="courtForm.get('name')?.hasError('pattern')">لا يمكن إدخال أرقام في اسم المحكمة</mat-error>
+              <mat-hint>أدخل  اسم المحكمة</mat-hint>
+            </mat-form-field>
+          </div>
+          <div class="col-md-5">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>المدينة</mat-label>
+              <input matInput formControlName="city" required>
+              <mat-error *ngIf="courtForm.get('city')?.hasError('required')">اسم المدينة مطلوب</mat-error>
+              <mat-error *ngIf="courtForm.get('city')?.hasError('pattern')">لا يمكن إدخال أرقام في اسم المدينة</mat-error>
+              <mat-hint>أدخل  اسم المدينة</mat-hint>
+
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <button mat-raised-button type="submit" class="w-100 bg-primary text-white" >إضافة محكمة</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">قائمة المحاكم</h5>
+    </div>
+    <div class="card-body p-0">
+      <div class="mat-elevation-z8 table-container">
+
+        <ng-container *ngIf="dataSource.data.length === 0; else tableContent">
+          <p class="text-center">لا توجد محاكم.  </p>
+        </ng-container>
+
+        <ng-template #tableContent>
           <mat-table [dataSource]="dataSource" class="courts-table">
             <!-- ID Column -->
             <ng-container matColumnDef="id">
@@ -50,7 +63,9 @@
                 </ng-container>
                 <ng-template #editName>
                   <mat-form-field appearance="outline">
-                    <input matInput [(ngModel)]="editingCourt!.name">
+                    <input matInput [formControl]="editNameControl">
+                    <mat-error *ngIf="editNameControl.hasError('required')">اسم المحكمة مطلوب</mat-error>
+                    <mat-error *ngIf="editNameControl.hasError('pattern')">لا يمكن إدخال أرقام في اسم المحكمة</mat-error>
                   </mat-form-field>
                 </ng-template>
               </mat-cell>
@@ -65,7 +80,9 @@
                 </ng-container>
                 <ng-template #editCity>
                   <mat-form-field appearance="outline">
-                    <input matInput [(ngModel)]="editingCourt!.city">
+                    <input matInput [formControl]="editCityControl">
+                    <mat-error *ngIf="editCityControl.hasError('required')">اسم المدينة مطلوب</mat-error>
+                    <mat-error *ngIf="editCityControl.hasError('pattern')">لا يمكن إدخال أرقام في اسم المدينة</mat-error>
                   </mat-form-field>
                 </ng-template>
               </mat-cell>
@@ -79,12 +96,12 @@
                   <button mat-icon-button color="primary" (click)="editCourt(court)" matTooltip="تعديل">
                     <mat-icon>edit</mat-icon>
                   </button>
-                  <button mat-icon-button color="warn" (click)="deleteCourt(court.id)" matTooltip="حذف">
+                  <button mat-icon-button color="warn" (click)="deleteCourt(court.id,court.name)" matTooltip="حذف">
                     <mat-icon>delete</mat-icon>
                   </button>
                 </ng-container>
                 <ng-template #editActions>
-                  <button mat-icon-button color="primary" (click)="updateCourt()" matTooltip="حفظ التغييرات">
+                  <button mat-icon-button color="primary" (click)="updateCourt()" matTooltip="حفظ التغييرات" [disabled]="editNameControl.invalid || editCityControl.invalid">
                     <mat-icon>check</mat-icon>
                   </button>
                   <button mat-icon-button color="warn" (click)="cancelEdit()" matTooltip="إلغاء التعديل">
@@ -97,11 +114,14 @@
             <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
           </mat-table>
-  
-          <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
-          </mat-paginator>
-        </div>
+
+
+        </ng-template>
+    
+
+        <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
+        </mat-paginator>
       </div>
     </div>
   </div>
-  
+</div>

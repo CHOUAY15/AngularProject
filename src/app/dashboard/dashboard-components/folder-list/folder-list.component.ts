@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Folder } from 'src/app/shared/models/folder';
+import { FileService } from 'src/app/core/service/file.service';
 
 
 @Component({
@@ -8,23 +8,36 @@ import { Folder } from 'src/app/shared/models/folder';
   styleUrls: ['./folder-list.component.scss']
 })
 export class FolderListComponent implements OnInit {
-  folders: Folder[] = [
-    
-   
-  ];
+  folders: any[] = [];
 
-  filteredFolders: Folder[] = [];
+  filteredFolders: any[] = [];
   currentPage = 1;
   itemsPerPage = 6;
   searchTerm = '';
   showImportantOnly: boolean | null = null;
   showNotImportant = false;
 
+  constructor(private fileService:FileService){}
+
   ngOnInit(): void {
+    this.loadFolders();
     this.applyFilters();
   }
+  loadFolders(){
+    this.fileService.findAll().subscribe(
+      (data: any[]) => {
+        console.log("nawaal",data)
+        this.folders = data;
+        this.applyFilters();
+      },
+      (error) => {
+        console.error('Error loading folders:', error);
+      }
+    );
 
-  get paginatedFolders(): Folder[] {
+  }
+
+  get paginatedFolders(): any[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     return this.filteredFolders.slice(startIndex, startIndex + this.itemsPerPage);
   }
@@ -42,7 +55,7 @@ export class FolderListComponent implements OnInit {
   applyFilters(): void {
     this.filteredFolders = this.folders.filter(folder => {
       const matchesSearch = folder.fileNumber.toLowerCase().includes(this.searchTerm.toLowerCase()) ;
-      const matchesImportant = this.showImportantOnly === null || folder.feesCollected === this.showImportantOnly;
+      const matchesImportant = this.showImportantOnly === null || folder.feeCollection === this.showImportantOnly;
       return matchesSearch && matchesImportant;
     });
     this.currentPage = 1;

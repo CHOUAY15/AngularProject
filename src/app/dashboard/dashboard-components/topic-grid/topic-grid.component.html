@@ -7,12 +7,14 @@
         <h5 class="mb-0">إضافة موضوع جديد</h5>
       </div>
       <div class="card-body">
-        <form (ngSubmit)="addTopic()" class="mb-0">
+        <form [formGroup]="topicForm" (ngSubmit)="addTopic()" class="mb-0">
           <div class="row g-3">
             <div class="col-md-10">
               <mat-form-field appearance="outline" class="w-100">
                 <mat-label>الوصف</mat-label>
-                <input matInput [(ngModel)]="newTopic.description" name="description" required>
+                <input matInput formControlName="description"  required>
+                <mat-error *ngIf="topicForm.get('description')?.hasError('required')">اسم الوصف مطلوب</mat-error>
+
                 <mat-hint>أدخل وصف الموضوع</mat-hint>
               </mat-form-field>
             </div>
@@ -31,54 +33,64 @@
       </div>
       <div class="card-body p-0">
         <div class="mat-elevation-z8 table-container">
-          <mat-table [dataSource]="dataSource" class="topics-table">
-            <!-- ID Column -->
-            <ng-container matColumnDef="id">
-              <mat-header-cell *matHeaderCellDef class="fw-bold">الرقم</mat-header-cell>
-              <mat-cell *matCellDef="let topic">{{topic.id}}</mat-cell>
-            </ng-container>
-  
-            <!-- Description Column -->
-            <ng-container matColumnDef="description">
-              <mat-header-cell *matHeaderCellDef class="fw-bold">الوصف</mat-header-cell>
-              <mat-cell *matCellDef="let topic">
-                <ng-container *ngIf="!isEditing(topic); else editDescription">
-                  {{topic.description}}
-                </ng-container>
-                <ng-template #editDescription>
-                  <mat-form-field appearance="outline">
-                    <input matInput [(ngModel)]="editingTopic!.description">
-                  </mat-form-field>
-                </ng-template>
-              </mat-cell>
-            </ng-container>
-  
-            <!-- Actions Column -->
-            <ng-container matColumnDef="actions">
-              <mat-header-cell *matHeaderCellDef class="text-danger fw-bold">الإجراءات</mat-header-cell>
-              <mat-cell *matCellDef="let topic">
-                <ng-container *ngIf="!isEditing(topic); else editActions">
-                  <button mat-icon-button color="primary" (click)="editTopic(topic)" matTooltip="تعديل">
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                  <button mat-icon-button color="warn" (click)="deleteTopic(topic.id)" matTooltip="حذف">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </ng-container>
-                <ng-template #editActions>
-                  <button mat-icon-button color="primary" (click)="updateTopic()" matTooltip="حفظ التغييرات">
-                    <mat-icon>check</mat-icon>
-                  </button>
-                  <button mat-icon-button color="warn" (click)="cancelEdit()" matTooltip="إلغاء التعديل">
-                    <mat-icon>close</mat-icon>
-                  </button>
-                </ng-template>
-              </mat-cell>
-            </ng-container>
-  
-            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-          </mat-table>
+
+          <ng-container *ngIf="dataSource.data.length === 0; else tableContent">
+            <p class="text-center">لا توجد مواضيع.  </p>
+          </ng-container>
+          <ng-template #tableContent>
+            <mat-table [dataSource]="dataSource" class="topics-table">
+              <!-- ID Column -->
+              <ng-container matColumnDef="id">
+                <mat-header-cell *matHeaderCellDef class="fw-bold">الرقم</mat-header-cell>
+                <mat-cell *matCellDef="let topic">{{topic.id}}</mat-cell>
+              </ng-container>
+    
+              <!-- Description Column -->
+              <ng-container matColumnDef="description">
+                <mat-header-cell *matHeaderCellDef class="fw-bold">الوصف</mat-header-cell>
+                <mat-cell *matCellDef="let topic">
+                  <ng-container *ngIf="!isEditing(topic); else editDescription">
+                    {{topic.description}}
+                  </ng-container>
+                  <ng-template #editDescription>
+                    <mat-form-field appearance="outline">
+                      <input matInput [formControl]="editDescriptionControl">
+                      <mat-error *ngIf="editDescriptionControl.hasError('required')">اسم الوصف مطلوب</mat-error>                  </mat-form-field>
+                  </ng-template>
+                </mat-cell>
+              </ng-container>
+    
+              <!-- Actions Column -->
+              <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef class="text-danger fw-bold">الإجراءات</mat-header-cell>
+                <mat-cell *matCellDef="let topic">
+                  <ng-container *ngIf="!isEditing(topic); else editActions">
+                    <button mat-icon-button color="primary" (click)="editTopic(topic)" matTooltip="تعديل">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="deleteTopic(topic.id,topic.description)" matTooltip="حذف">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </ng-container>
+                  <ng-template #editActions>
+                    <button mat-icon-button color="primary" (click)="updateTopic()" matTooltip="حفظ التغييرات" [disabled]="editDescriptionControl.invalid">
+                      <mat-icon>check</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="cancelEdit()" matTooltip="إلغاء التعديل">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </ng-template>
+                </mat-cell>
+              </ng-container>
+    
+              <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+
+
+            
+          </ng-template>
+      
   
           <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
           </mat-paginator>

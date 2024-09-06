@@ -1,17 +1,17 @@
 <div class="card folder-card">
   <div class="card-body">
     <h6 class="card-title">رقم الملف : {{ folder.fileNumber }}</h6>
-    <p class="card-text">تاريخ الخبرة : {{ folder.expertiseDate | date:'longDate':'':'ar' }}</p>
+    <p class="card-text">تاريخ الخبرة : {{ folder.experienceDate | date:'longDate':'':'ar' }}</p>
     <p class="card-text"><small class="text-muted">الاتعاب : {{ folder.fees }} درهم</small></p>
     <p class="card-text">
       <small
         class="text-muted"
         [ngClass]="{
-          'text-success': folder.feesCollected,
-          'text-danger': !folder.feesCollected
+          'text-success': folder.feeCollection,
+          'text-danger': !folder.feeCollection
         }"
       >
-        <ng-container *ngIf="folder.feesCollected; else noFees">
+        <ng-container *ngIf="folder.feeCollection; else noFees">
           تحصيل الاتعاب: نعم
         </ng-container>
         <ng-template #noFees>
@@ -20,10 +20,9 @@
       </small>
     </p>
         <div class="action">
-      <a   [routerLink]="['/detaille-folder/blalala']"  class="view-more" (click)="onView()">
-        المزيد
-      </a>
-      <a  class="delete" (click)="onDelete()" >
+          <a [routerLink]="['/detaille-folder', folder.id]" class="view-more" > المزيد</a>
+         
+      <a  class="delete" (click)="onDelete(folder.id)" >
         <i class="bi bi-trash"></i> ازالة
       </a>
       <a  class="update" (click)="onUpdate()">
