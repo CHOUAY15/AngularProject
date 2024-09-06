@@ -34,87 +34,34 @@ export class FullComponent {
       icon: "home",
       menu: "الصفحة الرئيسية",
     },
-    // {
-    //   link: "/Lawyers",
-    //   icon: "user",
-    //   menu: "لائحة المحامين",
-    // },
+
     {
       link: "/alerts",
-      icon: "user",
+      icon: "judge",
       menu: "لائحة القضاة",
     },
     {
       link: "/forms",
-      icon: "book",
+      icon: "feature",
       menu: "صفة الاطراف",
     },
 
     {
       link: "/grid-list",
-      icon: "file-text",
+      icon: "court",
       menu: "لائحة المحاكم",
     },
     {
       link: "/menu",
-      icon: "menu",
+      icon: "list",
       menu: "لائحة الإجراءات",
     },
     {
       link: "/table",
-      icon: "grid",
+      icon: "topic",
       menu: "لائحة المواضيع",
     },
-    // {
-    //   link: "/expansion",
-    //   icon: "divide-circle",
-    //   menu: "Expansion Panel",
-    // },
-    // {
-    //   link: "/chips",
-    //   icon: "award",
-    //   menu: "Chips",
-    // },
-    // {
-    //   link: "/tabs",
-    //   icon: "list",
-    //   menu: "Tabs",
-    // },
-    // {
-    //   link: "/progress",
-    //   icon: "bar-chart-2",
-    //   menu: "Progress Bar",
-    // },
-    // {
-    //   link: "/toolbar",
-    //   icon: "voicemail",
-    //   menu: "Toolbar",
-    // },
-    // {
-    //   link: "/progress-snipper",
-    //   icon: "loader",
-    //   menu: "Progress Snipper",
-    // },
-    // {
-    //   link: "/tooltip",
-    //   icon: "bell",
-    //   menu: "Tooltip",
-    // },
-    // {
-    //   link: "/snackbar",
-    //   icon: "slack",
-    //   menu: "Snackbar",
-    // },
-    // {
-    //   link: "/slider",
-    //   icon: "sliders",
-    //   menu: "Slider",
-    // },
-    // {
-    //   link: "/slide-toggle",
-    //   icon: "layers",
-    //   menu: "Slide Toggle",
-    // },
+   
   ]
 
 }

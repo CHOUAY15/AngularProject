@@ -13,7 +13,7 @@
         <mat-form-field appearance="outline">
           <mat-label>المحكمة</mat-label>
           <mat-select formControlName="court" required>
-            <mat-option *ngFor="let court of courts" [value]="court">{{court}}</mat-option>
+            <mat-option *ngFor="let court of courts" [value]="court">{{court.name}}</mat-option>
             <mat-option (click)="addNewOption('court')">+ إضافة محكمة جديدة</mat-option>
           </mat-select>
         </mat-form-field>
@@ -21,7 +21,7 @@
         <mat-form-field appearance="outline">
           <mat-label>الموضوع</mat-label>
           <mat-select formControlName="topic" required>
-            <mat-option *ngFor="let topic of topics" [value]="topic">{{topic}}</mat-option>
+            <mat-option *ngFor="let topic of topics" [value]="topic">{{topic.description}}</mat-option>
             <mat-option (click)="addNewOption('topic')">+ إضافة الموضوع جديد</mat-option>
           </mat-select>
         </mat-form-field>
@@ -32,7 +32,7 @@
         <mat-form-field appearance="outline">
           <mat-label>القاضي المقرر</mat-label>
           <mat-select formControlName="judge" required>
-            <mat-option *ngFor="let judge of judges" [value]="judge">{{judge}}</mat-option>
+            <mat-option *ngFor="let judge of judges" [value]="judge">{{judge.fullName}}</mat-option>
             <mat-option (click)="addNewOption('judge')">+ إضافة قاضي جديد</mat-option>
           </mat-select>
         </mat-form-field> 
@@ -40,7 +40,7 @@
         <mat-form-field appearance="outline">
           <mat-label>نوع الإجراء</mat-label>
           <mat-select formControlName="procedureType" required>
-            <mat-option *ngFor="let type of procedureTypes" [value]="type">{{type}}</mat-option>
+            <mat-option *ngFor="let type of procedureTypes" [value]="type">{{type.description}}</mat-option>
             <mat-option (click)="addNewOption('procedureType')">+ إضافة نوع إجراء جديد</mat-option>
           </mat-select>
         </mat-form-field>
@@ -50,18 +50,20 @@
           <input matInput formControlName="preliminaryJudgment">
         </mat-form-field>
 
+  
         <div formArrayName="parties">
           <h5>الأطراف</h5>
-          <div *ngFor="let party of parties.controls; let i=index">
+          <div *ngFor="let party of parties.controls; let i=index" [formGroupName]="i">
             <mat-form-field appearance="outline">
-              <mat-label>الطرف {{i + 1}}</mat-label>
-              <input matInput [formControlName]="i" required>
+              <mat-label>اسم الطرف {{i + 1}}</mat-label>
+              <input matInput formControlName="fullName" required>
             </mat-form-field>
+         
             <button mat-icon-button color="warn" (click)="removeParty(i)">
               <mat-icon>delete</mat-icon>
             </button>
           </div>
-          <button mat-raised-button color="accent" (click)="addNewOption('parties')">إضافة طرف </button>
+          <button mat-raised-button color="accent" (click)="addNewOption('parties')">إضافة طرف</button>
         </div>
 
        
@@ -106,18 +108,21 @@
 
         <div formArrayName="lawyers">
           <h5>المحامون</h5>
-          <div *ngFor="let lawyer of lawyers.controls; let i=index">
+          <div *ngFor="let lawyer of lawyers.controls; let i=index" [formGroupName]="i">
             <mat-form-field appearance="outline">
-              <mat-label>المحامي {{i + 1}}</mat-label>
-              <input matInput [formControlName]="i" required>
+              <mat-label>اسم المحامي {{i + 1}}</mat-label>
+              <input matInput formControlName="fullName" required>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>الهيئة</mat-label>
+              <input matInput formControlName="authority" required>
             </mat-form-field>
             <button mat-icon-button color="warn" (click)="removeLawyer(i)">
               <mat-icon>delete</mat-icon>
             </button>
           </div>
-          <button mat-raised-button color="accent" (click)="addNewOption('lawyer')">إضافة محامي </button>
+          <button mat-raised-button color="accent" (click)="addNewOption('lawyer')">إضافة محامي</button>
         </div>
-
         
       </div>
     </div>

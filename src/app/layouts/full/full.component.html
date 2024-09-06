@@ -7,8 +7,7 @@
     <div class="p-16">
       <div class="mb-16">
         <a href="javascript:void(0)" class="d-flex align-items-center justify-content-center">
-          <img src="assets/images/favicon.svg" alt="" class="img-fluid" style="width: 24px; height: 24px;">
-          <span class="ms-4 fw-bold" style="font-size: 26px;">ملفي</span>
+          <img src="assets/images/logo.png" alt="" class="img-fluid" style="width: 170px; height: 50px;">
         </a>
       </div>
 
@@ -17,8 +16,9 @@
           <li class="list-group mb-2" *ngFor="let sidenav of sidebarMenu">
             <a matRipple [matRippleColor]="'#f7f8f443'" routerLink="{{ sidenav.link }}"
               class="sidebar-menu w-100 d-flex align-items-center" [routerLinkActive]="routerActive">
-              <i-feather name="{{ sidenav.icon }}" class="feather-base me-12"></i-feather> <span
-                class="ps-4 ">{{ sidenav.menu }}</span>
+              <img [src]="'assets/images/' + sidenav.icon + '.svg'" alt="{{ sidenav.menu }}" class="me-12"
+                style="width: 24px; height: 24px;"> 
+              <span class="ps-4">{{ sidenav.menu }}</span>
             </a>
           </li>
         </ul>
