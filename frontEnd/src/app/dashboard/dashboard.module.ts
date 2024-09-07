@@ -58,7 +58,6 @@ import { SuccessDialogComponent } from './dashboard-components/success-dialog/su
     UpdateFolderComponent,
     InvitOptionDialogComponent,
     SuccessDialogComponent
-
   ],
   imports: [
     CommonModule,

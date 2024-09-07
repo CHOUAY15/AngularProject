@@ -1,8 +1,12 @@
 <div class="card folder-card">
   <div class="card-body">
     <h6 class="card-title">رقم الملف : {{ folder.fileNumber }}</h6>
-    <p class="card-text">تاريخ الخبرة : {{ folder.experienceDate | date:'longDate':'':'ar' }}</p>
-    <p class="card-text"><small class="text-muted">الاتعاب : {{ folder.fees }} درهم</small></p>
+    <p class="card-text">
+      تاريخ الخبرة : {{ folder.experienceDate | date : "longDate" : "" : "ar" }}
+    </p>
+    <p class="card-text">
+      <small class="text-muted">الاتعاب : {{ folder.fees }} درهم</small>
+    </p>
     <p class="card-text">
       <small
         class="text-muted"
@@ -14,18 +18,18 @@
         <ng-container *ngIf="folder.feeCollection; else noFees">
           تحصيل الاتعاب: نعم
         </ng-container>
-        <ng-template #noFees>
-          تحصيل الاتعاب: لا
-        </ng-template>
+        <ng-template #noFees> تحصيل الاتعاب: لا </ng-template>
       </small>
     </p>
-        <div class="action">
-          <a [routerLink]="['/detaille-folder', folder.id]" class="view-more" > المزيد</a>
-         
-      <a  class="delete" (click)="onDelete(folder.id)" >
+    <div class="action">
+      <a [routerLink]="['/detaille-folder', folder.id]" class="view-more">
+        المزيد</a
+      >
+
+      <a class="delete" (click)="onDelete(folder.id)">
         <i class="bi bi-trash"></i> ازالة
       </a>
-      <a  class="update" (click)="onUpdate()">
+      <a class="update" (click)="onUpdate()">
         <i class="bi bi-pencil"></i> تعديل
       </a>
     </div>

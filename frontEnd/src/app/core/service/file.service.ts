@@ -19,6 +19,14 @@ export class FileService {
       );
   }
 
+  updateFile(file: any, id: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/update/${id}`, file)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  
+
   getFileById(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
