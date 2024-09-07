@@ -134,7 +134,16 @@ export class FeatureGridComponent implements OnInit {
               }
             });
           },
-          error => console.error('Error deleting feature', error)
+          error => { 
+
+            this.dialog.open(SuccessDialogComponent, {
+              width: '350px',
+              data: {
+                title: 'تنبيه  ',
+                message: `هذه الصفة مستخدمة بالفعل في طرف، لا يمكنك حذفها`
+              }
+            });
+          }
         );
        
       }

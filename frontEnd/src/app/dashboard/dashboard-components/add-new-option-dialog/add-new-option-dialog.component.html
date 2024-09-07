@@ -6,18 +6,16 @@
         <mat-label>{{field.label}}</mat-label>
 
         <ng-container [ngSwitch]="field.type">
-
           <!-- Input field for all types except 'dropDown' -->
           <input *ngSwitchDefault matInput [formControlName]="field.name" [type]="field.type || 'text'">
 
           <!-- Dropdown field for 'dropDown' type -->
           <mat-select *ngSwitchCase="'dropDown'" [formControlName]="field.name">
-            <!-- Check if the list contains objects or strings -->
-            <mat-option *ngFor="let option of field.list" [value]="option.description">
+            <!-- Pass the whole object as the value -->
+            <mat-option *ngFor="let option of field.list" [value]="option">
               {{ option.description }}
             </mat-option>
           </mat-select>
-
         </ng-container>
 
       </mat-form-field>

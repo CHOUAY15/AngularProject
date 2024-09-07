@@ -378,23 +378,23 @@ export class AddFolderComponent implements OnInit {
       console.log('hbiba dyali ', fileData);
    
 
-      // this.fileService.createFile(fileData).subscribe(
-      //   (response) => {
-      //   this.folderRefreshService.triggerRefresh();
-      //   this.dialogRef.close();
-      //   this.dialog.open(SuccessDialogComponent, {
-      //     width: '350px',
-      //     data: {
-      //        title: 'تمت الإضافة بنجاح',
-      //         message: `تمت إضافة الملف  بنجاح.`
-      //     }
-      //   });
-      //     console.log('File created successfully:', response);
-      //   },
-      //   (error) => {
-      //     console.error('Error creating file:', error);
-      //   }
-      // );
+      this.fileService.createFile(fileData).subscribe(
+        (response) => {
+        this.folderRefreshService.triggerRefresh();
+        this.dialogRef.close();
+        this.dialog.open(SuccessDialogComponent, {
+          width: '350px',
+          data: {
+             title: 'تمت الإضافة بنجاح',
+              message: `تمت إضافة الملف  بنجاح.`
+          }
+        });
+          console.log('File created successfully:', response);
+        },
+        (error) => {
+          console.error('Error creating file:', error);
+        }
+      );
 
     } else {
       console.error('Form is not valid');
