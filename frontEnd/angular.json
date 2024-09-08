@@ -18,7 +18,9 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "allowedCommonJsDependencies": [
-              "apexcharts"
+              "apexcharts",
+              "html2pdf.js",
+                 "canvg"
             ],
             "outputPath": "dist/flexy-admin-angular-lite",
             "index": "src/index.html",

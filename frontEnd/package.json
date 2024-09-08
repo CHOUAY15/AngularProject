@@ -26,6 +26,7 @@
     "bootstrap-icons": "^1.11.3",
     "flexy-admin-angular-lite": "file:",
     "hammerjs": "^2.0.8",
+    "html2pdf.js": "^0.10.2",
     "ng-apexcharts": "1.10.0",
     "rxjs": "~7.8.1",
     "tslib": "^2.6.2",
