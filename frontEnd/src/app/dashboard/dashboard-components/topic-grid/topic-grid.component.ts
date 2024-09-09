@@ -136,7 +136,16 @@ export class TopicGridComponent implements OnInit {
               }
             });
           },
-          error => console.error('Error deleting topic', error)
+          error => { 
+
+            this.dialog.open(SuccessDialogComponent, {
+              width: '350px',
+              data: {
+                title: 'تنبيه  ',
+                message: `هذا الموضوع مستخدم بالفعل في ملف لا يمكنك حذفه`
+              }
+            });
+          }
         );
    
         

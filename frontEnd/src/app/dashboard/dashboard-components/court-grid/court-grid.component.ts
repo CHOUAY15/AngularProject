@@ -145,7 +145,16 @@ export class CourtGridComponent implements OnInit {
     
     
           },
-          error => console.error('Error deleting court', error)
+          error => { 
+
+            this.dialog.open(SuccessDialogComponent, {
+              width: '350px',
+              data: {
+                title: 'تنبيه  ',
+                message: `هذه المحكمه مستخدمة بالفعل في ملف، لا يمكن حذفها`
+              }
+            });
+          }
         );
        
       }

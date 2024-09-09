@@ -18,7 +18,11 @@ private apiUrl = 'http://localhost:8081/api';
   }
 
   addJudge(judge: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/judge/create`, judge); 
+    const judgePayload = {
+      fullName : judge.fullName,
+      gender: judge.gender.description
+    }
+    return this.http.post(`${this.apiUrl}/judge/create`, judgePayload); 
   }
   getAllJudges(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/judge/all`);

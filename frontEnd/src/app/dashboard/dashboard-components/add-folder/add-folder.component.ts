@@ -175,7 +175,7 @@ export class AddFolderComponent implements OnInit {
               name: 'gender',
               label: ' صفة القاضي (استاذ / استاذة)',
               type: 'dropDown',
-              list: [{description:'استاذ '}, {description:'استاذة'}],
+              list: [{ description: 'استاذ ' }, { description: 'استاذة' }],
               validators: [Validators.required],
             },
           ],

@@ -79,30 +79,7 @@
               >
               <mat-cell *matCellDef="let judge">{{ judge.id }}</mat-cell>
             </ng-container>
-
-            <!-- Full Name Column -->
-            <ng-container matColumnDef="fullName">
-              <mat-header-cell *matHeaderCellDef class="fw-bold"
-                >الاسم الكامل</mat-header-cell
-              >
-              <mat-cell *matCellDef="let judge">
-                <ng-container *ngIf="!isEditing(judge); else editFullName">
-                  {{ judge.fullName }}
-                </ng-container>
-                <ng-template #editFullName>
-                  <mat-form-field appearance="outline">
-                    <input matInput [formControl]="editFullNameControl" />
-                    <mat-error *ngIf="editFullNameControl.hasError('required')"
-                      >اسم القاضي مطلوب</mat-error
-                    >
-                    <mat-error *ngIf="editFullNameControl.hasError('pattern')"
-                      >لا يمكن إدخال أرقام في اسم القاضي</mat-error
-                    >
-                  </mat-form-field>
-                </ng-template>
-              </mat-cell>
-            </ng-container>
-
+            
             <!-- Gender Column -->
             <ng-container matColumnDef="gender">
               <mat-header-cell *matHeaderCellDef class="fw-bold"
@@ -120,6 +97,28 @@
                     </mat-select>
                     <mat-error *ngIf="editGenderControl.hasError('required')"
                       >اسم الصفة مطلوب</mat-error
+                    >
+                  </mat-form-field>
+                </ng-template>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="fullName">
+              <mat-header-cell *matHeaderCellDef class="fw-bold"
+                >الاسم الكامل</mat-header-cell
+              >
+              <mat-cell *matCellDef="let judge">
+                <ng-container *ngIf="!isEditing(judge); else editFullName">
+                  {{ judge.fullName }}
+                </ng-container>
+                <ng-template #editFullName>
+                  <mat-form-field appearance="outline">
+                    <input matInput [formControl]="editFullNameControl" />
+                    <mat-error *ngIf="editFullNameControl.hasError('required')"
+                      >اسم القاضي مطلوب</mat-error
+                    >
+                    <mat-error *ngIf="editFullNameControl.hasError('pattern')"
+                      >لا يمكن إدخال أرقام في اسم القاضي</mat-error
                     >
                   </mat-form-field>
                 </ng-template>

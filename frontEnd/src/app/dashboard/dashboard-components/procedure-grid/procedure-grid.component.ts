@@ -161,7 +161,16 @@ export class ProcedureGridComponent implements OnInit {
               }
             });
           },
-          (error) => console.error('Error deleting procedure', error)
+          error => { 
+
+            this.dialog.open(SuccessDialogComponent, {
+              width: '350px',
+              data: {
+                title: 'تنبيه  ',
+                message: `هذا الاجراء مستخدم بالفعل في ملف لا يمكنك حذف`
+              }
+            });
+          }
         );
       }
     });

@@ -141,8 +141,16 @@ export class JudgeGridComponent implements OnInit {
                 message: `تمت ازالة القاضي ${name} بنجاح.`
               }
             });
-          },
-          error => console.error('Error deleting judge', error)
+          },error => { 
+
+            this.dialog.open(SuccessDialogComponent, {
+              width: '350px',
+              data: {
+                title: 'تنبيه  ',
+                message: `هذا القاضي مستخدم بالفعل في ملف لا يمكنك حذفه`
+              }
+            });
+          }
         );
        
       }
