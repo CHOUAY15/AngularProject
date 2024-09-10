@@ -50,7 +50,7 @@ export class AddFolderComponent implements OnInit {
       judge: ['', Validators.required],
       procedureType: ['', Validators.required],
       parties: this.fb.array([]),
-      preliminaryJudgment: ['', Validators.required],
+      preliminaryJudgment: [null, Validators.required],
       fees: [null, [Validators.required, Validators.min(0)]],
       expertiseDate: [null, Validators.required],
       propertyReference: ['عقار غير محفظ', Validators.required],

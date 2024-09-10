@@ -6,9 +6,22 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { LawyerService } from 'src/app/core/service/lawyer.service';
-import { Lawyer } from 'src/app/shared/models/folder';
 import { SuccessDialogComponent } from '../success-dialog/success-dialog.component';
 import { DeleteConfirmationDialogComponent } from '../card-folder/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { BarService } from 'src/app/core/service/bar.service';
+import { AddNewOptionDialogComponent } from '../add-new-option-dialog/add-new-option-dialog.component';
+import { OptionService } from 'src/app/core/service/option.service';
+
+interface Bar {
+  id: number;
+  name: string;
+}
+
+interface Lawyer {
+  id: number;
+  fullName: string;
+  bar: Bar;
+}
 
 @Component({
   selector: 'app-lawyer-grid',
@@ -16,7 +29,7 @@ import { DeleteConfirmationDialogComponent } from '../card-folder/delete-confirm
   styleUrls: ['./lawyer-grid.component.scss']
 })
 export class LawyerGridComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'fullName', 'authority', 'actions'];
+  displayedColumns: string[] = ['id', 'fullName', 'bar', 'actions'];
   dataSource: MatTableDataSource<Lawyer>;
   editingLawyer: Lawyer | null = null;
   fileNum:any;
@@ -24,19 +37,21 @@ export class LawyerGridComponent implements OnInit {
   fileId:any;
 
   editFullNameControl:FormControl;
-  editAuthorityControl:FormControl;
+  editBarControl:FormControl;
+
+  bars: Bar[] = [];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private route:ActivatedRoute,private lawyerService: LawyerService,    private fb: FormBuilder,  private dialog: MatDialog) {
+  constructor(private route:ActivatedRoute,private lawyerService: LawyerService,private fb: FormBuilder,  private dialog: MatDialog, private barService: BarService, private optionService: OptionService,) {
     this.dataSource = new MatTableDataSource<Lawyer>([]);
     this.lawyerForm=this.fb.group({
       fullName: ['', [Validators.required, Validators.pattern(/^[^0-9]*$/)]],
-      authority:['', [Validators.required, Validators.pattern(/^[^0-9]*$/)]]
+      bar:['', [Validators.required]]
 
     });
     this.editFullNameControl=new FormControl('', [Validators.required, Validators.pattern(/^[^0-9]*$/)]);
-    this.editAuthorityControl=new FormControl('', [Validators.required, Validators.pattern(/^[^0-9]*$/)]);
+    this.editBarControl=new FormControl('', [Validators.required]);
   }
 
   ngOnInit() {
@@ -47,6 +62,14 @@ export class LawyerGridComponent implements OnInit {
    
     });
     this.loadLawyers(this.fileId);
+    this.loadBars();
+  }
+
+  loadBars() {
+    this.barService.getAllBars().subscribe(
+      data => this.bars = data,
+      error => console.error('Error fetching features', error)
+    );
   }
 
   ngAfterViewInit() {
@@ -81,7 +104,7 @@ export class LawyerGridComponent implements OnInit {
       const newLawyer: Lawyer = {
         id: 0,
         fullName: this.lawyerForm.get('fullName')?.value,
-        authority:this.lawyerForm.get('authority')?.value,
+        bar:this.lawyerForm.get('bar')?.value,
       };
       this.lawyerService.addLawyerToFile(newLawyer,this.fileId).subscribe(
         createdLawyer => {
@@ -104,15 +127,15 @@ export class LawyerGridComponent implements OnInit {
   editLawyer(lawyer: Lawyer) {
     this.editingLawyer = { ...lawyer };
     this.editFullNameControl.setValue(lawyer.fullName);
-    this.editAuthorityControl.setValue(lawyer.authority);
+    this.editBarControl.setValue(lawyer.bar);
   }
 
   updateLawyer() {
-    if (this.editingLawyer && this.editFullNameControl.valid && this.editAuthorityControl.valid) {
+    if (this.editingLawyer && this.editFullNameControl.valid && this.editBarControl.valid) {
       const updatedLawyer: Lawyer = {
         ...this.editingLawyer,
         fullName: this.editFullNameControl.value,
-        authority: this.editAuthorityControl.value
+        bar: this.editBarControl.value
       };
       this.lawyerService.updateLawyer(updatedLawyer.id, updatedLawyer).subscribe(
         updatedLawyer => {
@@ -161,5 +184,49 @@ export class LawyerGridComponent implements OnInit {
 
   isEditing(lawyer: Lawyer): boolean {
     return this.editingLawyer !== null && this.editingLawyer.id === lawyer.id;
+  }
+
+  addNewOption(field: string) {
+    let dialogConfig;
+    switch (field) {
+      case 'bar':
+        dialogConfig = {
+          title: 'إضافة هيئة جديدة',
+          fields: [
+            {
+              name: 'name',
+              label: ' إسم الهيئة ',
+              validators: [Validators.required],
+            },
+          ],
+        };
+        break;
+      default:
+        return;
+    }
+
+    const dialogRef = this.dialog.open(AddNewOptionDialogComponent, {
+      width: '400px',
+      data: dialogConfig,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        switch (field) {
+          
+          case 'bar':
+            this.optionService.addBar(result).subscribe(
+              (response: any) => {
+                this.bars.push(response);
+                this.lawyerForm.get('bar')?.setValue(response);
+              },
+              (error: any) => {
+                console.error('Error adding action:', error);
+              }
+            );
+            break;
+        }
+      }
+    });
   }
 }

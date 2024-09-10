@@ -12,6 +12,7 @@ import { JudgeGridComponent } from './dashboard/dashboard-components/judge-grid/
 import { ProcedureGridComponent } from './dashboard/dashboard-components/procedure-grid/procedure-grid.component';
 import { TopicGridComponent } from './dashboard/dashboard-components/topic-grid/topic-grid.component';
 import { PartyGridComponent } from './dashboard/dashboard-components/party-grid/party-grid.component';
+import { BarGridComponent } from './dashboard/dashboard-components/bar-grid/bar-grid.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,7 @@ const routes: Routes = [
       {path:"features", component:FeatureGridComponent},
       {path:"detaille-folder/:id",component:DetailleFolderComponent},
       {path:"courts",component:CourtGridComponent},
+      {path:"bars", component:BarGridComponent},
       {path:"judges",component:JudgeGridComponent},
       {path:"actions",component:ProcedureGridComponent},
       {path:"topics",component:TopicGridComponent},

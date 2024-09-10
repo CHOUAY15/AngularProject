@@ -13,6 +13,14 @@ private apiUrl = 'http://localhost:8081/api';
     return this.http.post(`${this.apiUrl}/court/create`, court); 
   }
 
+  addBar(bar: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/bar/create`, bar)
+  }
+
+  addFeature(feature:any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/feature/create`, feature)
+  }
+
   getAllCourts(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/court/all`);
   }

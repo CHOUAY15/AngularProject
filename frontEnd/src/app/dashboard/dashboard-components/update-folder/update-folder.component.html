@@ -46,7 +46,9 @@
 
         <mat-form-field appearance="outline">
           <mat-label>حكم تمهيدي</mat-label>
-          <input matInput formControlName="preliminaryJudgment">
+          <input matInput [matDatepicker]="picker" formControlName="preliminaryJudgment" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
        
       </div>

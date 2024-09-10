@@ -1,7 +1,6 @@
 package com.example.demo.entities;
 
-
-import java.util.*;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -9,8 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,14 +17,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Lawyer {
+public class Bar {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
-  private String fullName;
-  @ManyToMany(mappedBy = "lawyers")
+  private String name;
+  @OneToMany(mappedBy = "bar")
   @JsonIgnore
-  private List<File> files = new ArrayList<>();
-  @ManyToOne
-  private Bar bar;
+  private List<Lawyer> lawyers;
 }

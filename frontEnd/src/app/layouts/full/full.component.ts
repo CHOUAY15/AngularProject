@@ -61,6 +61,11 @@ export class FullComponent {
       icon: "topic",
       menu: "لائحة المواضيع",
     },
+    {
+      link: "/bars",
+      icon: "topic",
+      menu: "لائحة الهيئات",
+    },
    
   ]
 

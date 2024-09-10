@@ -44,7 +44,7 @@ public class LawyerController {
     return lawyerRepository.findById(id)
         .map(lawyer -> {
           lawyer.setFullName(updatedLawyer.getFullName());
-          lawyer.setAuthority(updatedLawyer.getAuthority());
+          lawyer.setBar(updatedLawyer.getBar());
           return lawyerRepository.save(lawyer);
         })
         .orElseThrow(() -> new IllegalArgumentException("Lawyer with id " + id + " not found"));

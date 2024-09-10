@@ -27,17 +27,16 @@
           <div class="col-md-5">
             <mat-form-field appearance="outline" class="w-100">
               <mat-label>الهيئة</mat-label>
-              <input matInput formControlName="authority" required />
-              <mat-error
-                *ngIf="lawyerForm.get('authority')?.hasError('required')"
-                >اسم الصفة مطلوب</mat-error
+              <mat-select formControlName="bar" required>
+                <mat-option *ngFor="let bar of bars" [value]="bar">
+                  {{ bar.name }}
+                </mat-option>
+                <mat-option (click)="addNewOption('bar')">+ إضافة هيئة جديدة</mat-option>
+              </mat-select>
+              <mat-error *ngIf="lawyerForm.get('bar')?.hasError('required')"
+                >اسم الهيئة مطلوب</mat-error
               >
-              <mat-error
-                *ngIf="lawyerForm.get('authority')?.hasError('pattern')"
-              >
-                لا يمكن أرقام في اسم الهيئة</mat-error
-              >
-              <mat-hint>أدخل اسم الهيئة </mat-hint>
+              <mat-hint> إختر هيئة المحامي </mat-hint>
             </mat-form-field>
           </div>
           <div class="col-md-2">
@@ -93,28 +92,24 @@
             </mat-cell>
           </ng-container>
 
-          <!-- Authority Column -->
-          <ng-container matColumnDef="authority">
-            <mat-header-cell *matHeaderCellDef class="fw-bold"
-              >الهيئة</mat-header-cell
-            >
+          <ng-container matColumnDef="bar">
+            <mat-header-cell *matHeaderCellDef class="fw-bold">الهيئة</mat-header-cell>
             <mat-cell *matCellDef="let lawyer">
-              <ng-container *ngIf="!isEditing(lawyer); else editAuthority">
-                {{ lawyer.authority }}
+              <ng-container *ngIf="!isEditing(lawyer); else editBar">
+                {{ lawyer.bar.name }}
               </ng-container>
-              <ng-template #editAuthority>
+              <ng-template #editBar>
                 <mat-form-field appearance="outline">
-                  <input matInput [formControl]="editAuthorityControl" />
-                  <mat-error *ngIf="editAuthorityControl.hasError('required')"
-                    >اسم الصفة مطلوب</mat-error
-                  >
-                  <mat-error *ngIf="editAuthorityControl.hasError('pattern')"
-                    >لا يمكن إدخال أرقام في اسم الهيئة</mat-error
-                  >
+                  <mat-select [formControl]="editBarControl" [value]="lawyer.bar">
+                    <mat-option *ngFor="let bar of bars" [value]="bar">
+                      {{ bar.name }}
+                    </mat-option>
+                  </mat-select>
                 </mat-form-field>
               </ng-template>
             </mat-cell>
           </ng-container>
+          
 
           <!-- Actions Column -->
           <ng-container matColumnDef="actions">
@@ -134,7 +129,7 @@
                 <button
                   mat-icon-button
                   color="warn"
-                  (click)="deleteLawyer(lawyer.id,lawyer.fullName)"
+                  (click)="deleteLawyer(lawyer.id, lawyer.fullName)"
                   matTooltip="حذف"
                 >
                   <mat-icon>delete</mat-icon>
@@ -147,8 +142,8 @@
                   (click)="updateLawyer()"
                   matTooltip="حفظ التغييرات"
                   [disabled]="
-                  editFullNameControl.invalid || editAuthorityControl.invalid
-                "
+                    editFullNameControl.invalid || editBarControl.invalid
+                  "
                 >
                   <mat-icon>check</mat-icon>
                 </button>
@@ -157,7 +152,6 @@
                   color="warn"
                   (click)="cancelEdit()"
                   matTooltip="إلغاء التعديل"
-               
                 >
                   <mat-icon>close</mat-icon>
                 </button>

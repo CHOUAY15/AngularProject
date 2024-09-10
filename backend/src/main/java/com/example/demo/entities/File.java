@@ -9,7 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,7 +23,8 @@ public class File {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
   private String fileNumber;
-  private String judgment;
+  @Temporal(jakarta.persistence.TemporalType.DATE)
+  private Date judgment;
   private double fees;
   @Temporal(jakarta.persistence.TemporalType.DATE)
   private Date experienceDate;

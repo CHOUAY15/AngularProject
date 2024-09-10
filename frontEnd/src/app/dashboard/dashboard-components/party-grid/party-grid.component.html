@@ -41,6 +41,7 @@
                 <mat-option *ngFor="let feature of features" [value]="feature">
                   {{ feature.description }}
                 </mat-option>
+                <mat-option (click)="addNewOption('feature')">+ إضافة صفة جديدة</mat-option>
               </mat-select>
               <mat-error *ngIf="partyForm.get('feature')?.hasError('required')"
                 >اسم الصفة مطلوب</mat-error

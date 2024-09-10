@@ -17,7 +17,7 @@
     <div class="card-body">
       <div class="row">
         <div class="col-md-6">
-          <h4 class="text-primary mb-4">معلومات أساسية</h4>
+          <h4 class="text-primary mb-4">معلومات عن الملف</h4>
           <p>
             <strong>رقم الملف:</strong>
             <span class="badge bg-info">{{ folder.fileNumber }}</span>
@@ -26,17 +26,18 @@
             <strong>المحكمة:</strong> {{ folder.court.name }}
             {{ folder.court.city }}
           </p>
-          <p><strong>الموضوع:</strong> {{ folder.topic.description }}</p>
           <p>
             <strong>القاضي:</strong> {{ folder.judge.gender }}
             {{ folder.judge.fullName }}
           </p>
+          <p><strong>الموضوع:</strong> {{ folder.topic.description }}</p>
           <p>
             <strong>نوع الإجراء:</strong> {{ folder.actionType.description }}
           </p>
+          <p><strong> حكم تمهيدي:</strong> {{ folder.judgment | date : "longDate" : "" : "ar" }}</p>
         </div>
         <div class="col-md-6">
-          <h4 class="text-primary mb-4">معلومات الأطراف والمحامون</h4>
+          <h4 class="text-primary mb-4"> الأطراف والمحامون</h4>
           <p>
             <strong>الأطراف:</strong>
             <a (click)="showParties()" class="btn btn-link text-success"
@@ -54,7 +55,7 @@
       <hr />
       <div class="row mt-4">
         <div class="col-md-6">
-          <h4 class="text-primary mb-4">معلومات مالية</h4>
+          <h4 class="text-primary mb-4">الأتعاب</h4>
           <p>
             <strong> الأتعاب:</strong>
             <span class="text-success">{{
@@ -63,7 +64,18 @@
           </p>
           <p><strong>رقم الحساب:</strong> {{ folder.accountNumber }}</p>
           <p>
-            <strong> الأتعاب المحصلة:</strong>
+            <strong>ورقة المصروف:</strong>
+            <span
+              [ngClass]="{
+                'text-success': folder.depositExpenseSheet,
+                'text-warning': !folder.depositExpenseSheet
+              }"
+            >
+              {{ folder.depositExpenseSheet ? "تم تقديمها" : "لم يتم تقديمها" }}
+            </span>
+          </p>
+          <p>
+            <strong>تحصيل الأتعاب:</strong>
             <span
               [ngClass]="{
                 'text-success': folder.feeCollection,
@@ -75,9 +87,8 @@
           </p>
         </div>
         <div class="col-md-6">
-          <h4 class="text-primary mb-4">معلومات إضافية</h4>
-          <p><strong> حكم تمهيدي:</strong> {{ folder.judgment }}</p>
-          <p><strong>  المرجع العقاري:</strong> {{ folder.reference }}</p>
+          <h4 class="text-primary mb-4">الخبرة</h4>
+          <p><strong> المرجع العقاري:</strong> {{ folder.reference }}</p>
 
           <p>
             <strong>تاريخ الخبرة:</strong>
@@ -94,19 +105,6 @@
               {{ folder.depositExpertReport ? "تم تقديمه" : "لم يتم تقديمه" }}
             </span>
           </p>
-          <p>
-            <strong>ورقة المصروف:</strong>
-            <span
-              [ngClass]="{
-                'text-success': folder.depositExpenseSheet,
-                'text-warning': !folder.depositExpenseSheet
-              }"
-            >
-              {{
-                folder.depositExpenseSheet ? "تم تقديمها" : "لم يتم تقديمها"
-              }}
-            </span>
-          </p>
         </div>
       </div>
     </div>
@@ -120,8 +118,11 @@
           <i class="bi bi-file-earmark-text"></i> استخراج استدعاء
         </a>
         <!-- hna  bdl lfonction bwhda okhra  khli nfs dialog  wdir gha   lmanipulation mbdla -->
-        <a class="btn btn-success text-white" (click)="generateDeliveryCertificate()">
-          <i class="bi bi-file-earmark-text"></i> استخراج شهادة التسليم 
+        <a
+          class="btn btn-success text-white"
+          (click)="generateDeliveryCertificate()"
+        >
+          <i class="bi bi-file-earmark-text"></i> استخراج شهادة التسليم
         </a>
         <a class="btn btn-info text-white" (click)="onUpdate()">
           <i class="bi bi-pencil"></i> تعديل

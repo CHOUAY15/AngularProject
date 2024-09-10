@@ -14,6 +14,8 @@ import { PartyService } from 'src/app/core/service/party.service';
 import { SuccessDialogComponent } from '../success-dialog/success-dialog.component';
 import { DeleteConfirmationDialogComponent } from '../card-folder/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { FeatureService } from 'src/app/core/service/feature.service';
+import { AddNewOptionDialogComponent } from '../add-new-option-dialog/add-new-option-dialog.component';
+import { OptionService } from 'src/app/core/service/option.service';
 
 interface Feature {
   id: number;
@@ -59,6 +61,7 @@ export class PartyGridComponent implements OnInit {
     private fb: FormBuilder,
     private dialog: MatDialog,
     private featureService: FeatureService,
+    private optionService: OptionService,
   ) {
     this.dataSource = new MatTableDataSource<Party>([]);
     this.partyForm = this.fb.group({
@@ -216,5 +219,49 @@ export class PartyGridComponent implements OnInit {
 
   isEditing(party: Party): boolean {
     return this.editingParty !== null && this.editingParty.id === party.id;
+  }
+
+  addNewOption(field: string) {
+    let dialogConfig;
+    switch (field) {
+      case 'feature':
+        dialogConfig = {
+          title: 'إضافة صفة جديدة',
+          fields: [
+            {
+              name: 'description',
+              label: ' إسم الصفة ',
+              validators: [Validators.required],
+            },
+          ],
+        };
+        break;
+      default:
+        return;
+    }
+
+    const dialogRef = this.dialog.open(AddNewOptionDialogComponent, {
+      width: '400px',
+      data: dialogConfig,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        switch (field) {
+          
+          case 'feature':
+            this.optionService.addFeature(result).subscribe(
+              (response: any) => {
+                this.features.push(response);
+                this.partyForm.get('feature')?.setValue(response);
+              },
+              (error: any) => {
+                console.error('Error adding action:', error);
+              }
+            );
+            break;
+        }
+      }
+    });
   }
 }

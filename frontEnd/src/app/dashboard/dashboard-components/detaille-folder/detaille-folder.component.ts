@@ -735,7 +735,7 @@ export class DetailleFolderComponent implements OnInit {
         <p style="margin-top:0pt; margin-bottom:0pt; text-align:center; font-size:10pt;"><strong><em>&nbsp;</em></strong></p>
         <p style="margin-top:0pt; margin-bottom:0pt; text-align:center; line-height:150%; font-size:14pt;"><em><u><span style="font-weight:bold;" dir="rtl">إلى السيد (ة)</span></u></em></p>
         <p style="margin-top:0pt; margin-bottom:0pt; text-align:center; font-size:16pt;"><em><span style="font-weight:bold;" dir="rtl">الأستاذ(ة)   ${lawyer.fullName}</span></em></p>
-        <p style="margin-top:0pt; margin-bottom:0pt; text-align:center; font-size:16pt;"><em><span style="font-weight:bold;" dir="rtl">محامي بهيئة  ${lawyer.authority}</span></em></p>
+        <p style="margin-top:0pt; margin-bottom:0pt; text-align:center; font-size:16pt;"><em><span style="font-weight:bold;" dir="rtl">محامي ب  ${lawyer.authority}</span></em></p>
         <p style="margin-top:0pt; margin-bottom:0pt; text-align:center; font-size:16pt;"><strong><em>&nbsp;</em></strong></p>
         <p style="margin-top:0pt; margin-bottom:0pt; text-align:center; font-size:14pt;"><em><u><span style="font-weight:bold;" dir="rtl">استدعاء قانوني لحضور إجراءات خبرة.</span></u></em> : الموضوع</p>
         <p style="margin-top:0pt; margin-bottom:0pt; text-align:right; font-size:16pt;"><strong><em>&nbsp;</em></strong></p>
