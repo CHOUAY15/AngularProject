@@ -2,11 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FileService } from 'src/app/core/service/file.service';
 import { FolderRefreshService } from 'src/app/core/service/folder-refresh.service';
 
-
 @Component({
   selector: 'app-folder-list',
   templateUrl: './folder-list.component.html',
-  styleUrls: ['./folder-list.component.scss']
+  styleUrls: ['./folder-list.component.scss'],
 })
 export class FolderListComponent implements OnInit {
   folders: any[] = [];
@@ -18,19 +17,22 @@ export class FolderListComponent implements OnInit {
   showImportantOnly: boolean | null = null;
   showNotImportant = false;
 
-  constructor(private fileService:FileService,private folderRefreshService: FolderRefreshService,){}
+  constructor(
+    private fileService: FileService,
+    private folderRefreshService: FolderRefreshService
+  ) {}
 
   ngOnInit(): void {
     this.loadFolders();
     this.applyFilters();
     this.folderRefreshService.refreshFolders$.subscribe(() => {
-      this.loadFolders(); 
+      this.loadFolders();
     });
   }
-  loadFolders(){
+  loadFolders() {
     this.fileService.findAll().subscribe(
       (data: any[]) => {
-        console.log("nawaal",data)
+        console.log('nawaal', data);
         this.folders = data;
         this.applyFilters();
       },
@@ -38,12 +40,14 @@ export class FolderListComponent implements OnInit {
         console.error('Error loading folders:', error);
       }
     );
-
   }
 
   get paginatedFolders(): any[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    return this.filteredFolders.slice(startIndex, startIndex + this.itemsPerPage);
+    return this.filteredFolders.slice(
+      startIndex,
+      startIndex + this.itemsPerPage
+    );
   }
 
   get totalPages(): number {
@@ -57,9 +61,30 @@ export class FolderListComponent implements OnInit {
   }
 
   applyFilters(): void {
-    this.filteredFolders = this.folders.filter(folder => {
-      const matchesSearch = folder.fileNumber.toLowerCase().includes(this.searchTerm.toLowerCase()) ;
-      const matchesImportant = this.showImportantOnly === null || folder.feeCollection === this.showImportantOnly;
+    this.filteredFolders = this.folders.filter((folder) => {
+      const matchesSearch =
+        folder.fileNumber
+          .toLowerCase()
+          .includes(this.searchTerm.toLowerCase()) ||
+        folder.court.name
+          .toLowerCase()
+          .includes(this.searchTerm.toLowerCase()) ||
+        folder.judge.fullName
+          .toLowerCase()
+          .includes(this.searchTerm.toLowerCase()) ||
+        folder.topic.description
+          .toLowerCase()
+          .includes(this.searchTerm.toLowerCase()) ||
+        folder.actionType.description
+          .toLowerCase()
+          .includes(this.searchTerm.toLowerCase()) ||
+        folder.judgment
+          ?.toString()
+          .toLowerCase()
+          .includes(this.searchTerm.toLowerCase());
+      const matchesImportant =
+        this.showImportantOnly === null ||
+        folder.feeCollection === this.showImportantOnly;
       return matchesSearch && matchesImportant;
     });
     this.currentPage = 1;

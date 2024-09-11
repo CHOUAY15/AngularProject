@@ -108,9 +108,7 @@
      إلغاء
     </button>
     <div>
-      <button class="btn  text-primary me-2" (click)="prevStep()" [disabled]="currentStep === 0">
-        <i class="bi bi-chevron-right me-1"></i>السابق
-      </button>
+     
       <button class="btn  text-primary" (click)="nextStep()" [disabled]="isLastStep() && !fileForm.valid">
         <span *ngIf="!isLastStep()">
           التالي<i class="bi bi-chevron-left ms-1"></i>
@@ -118,6 +116,9 @@
         <span *ngIf="isLastStep()">
           تعديل<i class="bi bi-check-lg ms-1"></i>
         </span>
+      </button>
+      <button class="btn  text-primary me-2" (click)="prevStep()" [disabled]="currentStep === 0">
+        <i class="bi bi-chevron-right me-1"></i>السابق
       </button>
     </div>
   </div>

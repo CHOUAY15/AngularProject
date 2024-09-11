@@ -63,7 +63,7 @@ export class FullComponent {
     },
     {
       link: "/bars",
-      icon: "topic",
+      icon: "authority",
       menu: "لائحة الهيئات",
     },
    

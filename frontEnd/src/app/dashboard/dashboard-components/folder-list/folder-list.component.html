@@ -12,17 +12,17 @@
                 </span>
                 
                 <input 
-                  type="text" 
-                  id="searchInput"
-                  class="form-control" 
-                  placeholder="ادخل رقم الملف ..." 
-                  [(ngModel)]="searchTerm" 
-                  (input)="applyFilters()"
-                >
-              </div>
-              <small class="form-text text-muted">
-                يمكنك البحث باستخدام رقم الملف
-              </small>
+                type="text" 
+                id="searchInput"
+                class="form-control" 
+                placeholder="البحث   ..." 
+                [(ngModel)]="searchTerm" 
+                (input)="applyFilters()"
+              >
+            </div>
+            <small class="form-text text-muted">
+              يمكنك البحث باستخدام خيارات متعددة: رقم الملف، اسم المحكمة، اسم القاضي، الموضوع، نوع الإجراء، تاريخ الحكم تمهيدي.
+            </small>
             </div>
             <div class="col-md-6">
               <label class="form-label">تحصيل الأتعاب</label>
